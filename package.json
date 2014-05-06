@@ -1,0 +1,24 @@
+{
+  "name": "testing123",
+  "version": "0.2.0",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/johnshopkins/testing123.git"
+  },
+  "author": [
+    "Jason Rhodes",
+    "Jen Wachter"
+  ],
+  "readmeFilename": "README.md",
+  "dependencies": {
+    "gulp-git": "^0.4.0",
+    "gulp": "^3.6.2",
+    "watchify": "^0.8.2",
+    "gulp-phpunit": "~0.5.1",
+    "minimist": "0.0.8",
+    "gulp-bump": "~0.1.8",
+    "async": "~0.8.0",
+    "chalk": "~0.4.0"
+  }
+}
