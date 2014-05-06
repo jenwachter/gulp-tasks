@@ -7,6 +7,7 @@ var getTask = {
   js: require("./lib/tasks-js"),
   css: require("./lib/tasks-css"),
   images: require("./lib/tasks-images"),
+  wptheme: require("./lib/tasks-wptheme"),
   release: require("./lib/tasks-release")
 };
 
@@ -30,12 +31,13 @@ taskTypes.prototype.images = function () {
 
 taskTypes.prototype.wptheme = function () {
   
-  gulp.tasks = _.extend(getTask.js(), getTask.css(), getTask.images());
+  gulp.tasks = _.extend(getTask.js(), getTask.css(), getTask.images(), getTask.wptheme());
 
-  gulp.task("watch", ["compile:js", "compile:css", "move:images"], function () {
+  gulp.task("watch", ["compile:js", "compile:css", "move:images", "compile:themefiles"], function () {
     gulp.watch(["./src/js/**/*.js", "!./src/js/vendor/**/*.js"], ["compile:js"]);
     gulp.watch(["./src/css/**/*.scss", "!./src/css/vendor/**/*.scss"], ["compile:css"]);
     gulp.watch(["./src/images/**/*"], ["move:images"]);
+    gulp.watch(["./src/controllers/*.php", "./src/partials/*.php", "!./src/partials/_*.php"], ["compile:themefiles"]);
   });
 
   return gulp.tasks;
