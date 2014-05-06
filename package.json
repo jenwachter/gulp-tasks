@@ -1,10 +1,10 @@
 {
-  "name": "testing123",
-  "version": "0.2.0",
+  "name": "gulp-tasks",
+  "version": "0.0.1",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/johnshopkins/testing123.git"
+    "url": "git://github.com/johnshopkins/gulp-tasks.git"
   },
   "author": [
     "Jason Rhodes",
