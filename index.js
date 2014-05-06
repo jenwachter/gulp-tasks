@@ -59,4 +59,8 @@ taskTypes.prototype.wpplugin = function () {
 
 };
 
+taskTypes.prototype.release = function () {
+  return getTask.release();
+}
+
 module.exports = new taskTypes();
