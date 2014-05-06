@@ -1,5 +1,6 @@
 var gulp = require("gulp");
 var phpunit = require("gulp-phpunit");
+var _ = require("underscore");
 var argv = require("minimist")(process.argv.slice(2));
 var release = require("./lib/releaser");
 
@@ -7,8 +8,6 @@ var release = require("./lib/releaser");
 var tasks = function () {};
 
 tasks.prototype.php = function () {
-
-  gulp.tasks = this.release();
 
   gulp.task("phpunit", function() {
     gulp.src(["./tests/**/*Test.php"]).pipe(phpunit());
@@ -18,7 +17,7 @@ tasks.prototype.php = function () {
     gulp.watch(["./src/**/*.php", "./tests/**/*.php"], ["phpunit"]);
   });
 
-  return gulp.tasks;
+  return _.extend(gulp.tasks, this.release());
 
 };
 

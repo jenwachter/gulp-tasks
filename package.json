@@ -19,6 +19,7 @@
     "minimist": "0.0.8",
     "gulp-bump": "~0.1.8",
     "async": "~0.8.0",
-    "chalk": "~0.4.0"
+    "chalk": "~0.4.0",
+    "underscore": "~1.6.0"
   }
 }
