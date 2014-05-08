@@ -30,6 +30,7 @@
     "gulp-if": "^1.1.0",
     "gulp-browserify": "^0.5.0",
     "gulp-uglify": "^0.2.1",
-    "gulp-rename": "git+ssh://git@github.com:jenwachter/gulp-rename.git#add-file"
+    "gulp-rename": "git+ssh://git@github.com:jenwachter/gulp-rename.git#add-file",
+    "mocha": "~1.17.1"
   }
 }
