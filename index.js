@@ -1,6 +1,7 @@
 var gulp = require("gulp");
 var _ = require("underscore");
 var argv = require("minimist")(process.argv.slice(2));
+var paths = require("./lib/paths");
 
 var getTask = {
   php: require("./lib/tasks-php"),
@@ -34,9 +35,9 @@ taskTypes.prototype.wptheme = function () {
   gulp.tasks = _.extend(getTask.js(), getTask.css(), getTask.images(), getTask.wptheme());
 
   gulp.task("watch", ["compile:js", "compile:css", "move:images", "compile:themefiles"], function () {
-    gulp.watch(["./src/js/**/*.js", "!./src/js/vendor/**/*.js"], ["compile:js"]);
-    gulp.watch(["./src/css/**/*.scss", "!./src/css/vendor/**/*.scss"], ["compile:css"]);
-    gulp.watch(["./src/images/**/*"], ["move:images"]);
+    gulp.watch(paths.js.watch, ["compile:js"]);
+    gulp.watch(paths.css.watch, ["compile:css"]);
+    gulp.watch(paths.images.watch, ["move:images"]);
     gulp.watch(["./src/controllers/*.php", "./src/partials/*.php", "!./src/partials/_*.php"], ["compile:themefiles"]);
   });
 
@@ -49,10 +50,10 @@ taskTypes.prototype.wpplugin = function () {
   gulp.tasks = _.extend(getTask.js(), getTask.css(), getTask.images(), getTask.php());
 
   gulp.task("watch", ["compile:js", "compile:css", "move:images"], function () {
-    gulp.watch(["./src/js/**/*.js", "!./src/js/vendor/**/*.js"], ["compile:js"]);
-    gulp.watch(["./src/css/**/*.scss", "!./src/css/vendor/**/*.scss"], ["compile:css"]);
-    gulp.watch(["./src/images/**/*"], ["move:images"]);
-    gulp.watch(["./src/**/*.php", "./tests/**/*.php"], ["phpunit"]);
+    gulp.watch(paths.js.watch, ["compile:js"]);
+    gulp.watch(paths.css.watch, ["compile:css"]);
+    gulp.watch(paths.images.watch, ["move:images"]);
+    gulp.watch(paths.php.watch, ["phpunit"]);
   });
 
   return gulp.tasks;
