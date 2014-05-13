@@ -32,7 +32,7 @@ taskTypes.prototype.images = function () {
 
 taskTypes.prototype.wptheme = function () {
   
-  gulp.tasks = _.extend(getTask.js(), getTask.css(), getTask.images(), getTask.wptheme());
+  gulp.tasks = _.extend(getTask.js(), getTask.css(), getTask.images(), getTask.release());
 
   gulp.task("watch", ["compile:js", "compile:css", "move:images", "compile:themefiles"], function () {
     gulp.watch(paths.js.watch, ["compile:js"]);
@@ -47,7 +47,7 @@ taskTypes.prototype.wptheme = function () {
 
 taskTypes.prototype.wpplugin = function () {
 
-  gulp.tasks = _.extend(getTask.js(), getTask.css(), getTask.images(), getTask.php());
+  gulp.tasks = _.extend(getTask.js(), getTask.css(), getTask.images(), getTask.php(), getTask.release());
 
   gulp.task("watch", ["compile:js", "compile:css", "move:images"], function () {
     gulp.watch(paths.js.watch, ["compile:js"]);
