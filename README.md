@@ -56,7 +56,7 @@ Tasks assume file structure created by [johnshopkins/generator-wp-plugin](https:
 
 __gulp watch__: Watches for changes to certain types of files. When there are changes...
 
-- JavaScript: scripts are compiled to `dist/js`. If a JavaScript library you are creating needs unit tests, it should be created as a separate Node package.
+- JavaScript: scripts are compiled to `dist/js`. _FYI: If a JavaScript library you are creating needs unit tests, it should be created as a separate Node package._
 - CSS: SCSS is compiled to `dist/css`.
 - Images: images are moved to `dist/images`.
 - PHP: unit tests are run.
@@ -76,7 +76,7 @@ _Yeoman generator to come. For now, look to [machado theme](https://github.com/j
 
 __gulp watch__: Watches for changes to certain types of files. When there are changes...
 
-- JavaScript: scripts are compiled to `dist/js`. If a JavaScript library you are creating needs unit tests, it should be created as a separate Node package.
+- JavaScript: scripts are compiled to `dist/js`. _FYI: If a JavaScript library you are creating needs unit tests, it should be created as a separate Node package._
 - CSS: SCSS is compiled to `dist/css`.
 - Images: images are moved to `dist/images`.
 - PHP: Controllers and partials are copied to the root, where WordPress expects them. As of now, unit tests are not part of this task.
