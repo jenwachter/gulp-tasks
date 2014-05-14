@@ -50,7 +50,7 @@ __gulp phpunit__: Runs `phpunit` in the root of your project. Make sure you have
 gulp.tasks = require("gulp-tasks").wpplugin();
 ```
 
-Tasks assume file structure created by [johnshopkins/generator-composer](https://github.com/johnshopkins/generator-wp-plugin).
+Tasks assume file structure created by [johnshopkins/generator-wp-plugin](https://github.com/johnshopkins/generator-wp-plugin).
 
 #### Tasks it creates
 
