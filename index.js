@@ -32,7 +32,7 @@ taskTypes.prototype.images = function () {
 
 taskTypes.prototype.wptheme = function () {
   
-  gulp.tasks = _.extend(getTask.js(), getTask.css(), getTask.images(), getTask.release());
+  gulp.tasks = _.extend(getTask.js(), getTask.css(), getTask.images(), getTask.wptheme(), getTask.release());
 
   gulp.task("watch", ["compile:js", "compile:css", "move:images", "compile:themefiles"], function () {
     gulp.watch(paths.js.watch, ["compile:js"]);
