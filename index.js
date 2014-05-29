@@ -32,12 +32,13 @@ taskTypes.prototype.images = function () {
 
 taskTypes.prototype.wptheme = function () {
   
-  gulp.tasks = _.extend(getTask.js(), getTask.css(), getTask.images(), getTask.wptheme(), getTask.release());
+  gulp.tasks = _.extend(getTask.js(), getTask.css(), getTask.images(), getTask.wptheme(), getTask.php(), getTask.release());
 
-  gulp.task("watch", ["compile:js", "compile:css", "move:images", "compile:themefiles"], function () {
+  gulp.task("watch", ["compile:js", "compile:css", "move:images", "phpunit", "compile:themefiles"], function () {
     gulp.watch(paths.js.watch, ["compile:js"]);
     gulp.watch(paths.css.watch, ["compile:css"]);
     gulp.watch(paths.images.watch, ["move:images"]);
+    gulp.watch(paths.php.watch, ["phpunit"]);
     gulp.watch(["./src/controllers/*.php", "./src/partials/*.php", "!./src/partials/_*.php"], ["compile:themefiles"]);
   });
 
@@ -49,7 +50,7 @@ taskTypes.prototype.wpplugin = function () {
 
   gulp.tasks = _.extend(getTask.js(), getTask.css(), getTask.images(), getTask.php(), getTask.release());
 
-  gulp.task("watch", ["compile:js", "compile:css", "move:images"], function () {
+  gulp.task("watch", ["compile:js", "compile:css", "move:images", "phpunit"], function () {
     gulp.watch(paths.js.watch, ["compile:js"]);
     gulp.watch(paths.css.watch, ["compile:css"]);
     gulp.watch(paths.images.watch, ["move:images"]);
