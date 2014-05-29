@@ -39,7 +39,7 @@ taskTypes.prototype.wptheme = function () {
     gulp.watch(paths.css.watch, ["compile:css"]);
     gulp.watch(paths.images.watch, ["move:images"]);
     gulp.watch(paths.php.watch, ["phpunit"]);
-    gulp.watch(["./src/controllers/*.php", "./src/partials/*.php", "!./src/partials/_*.php"], ["compile:themefiles"]);
+    gulp.watch(["./src/theme/controllers/*.php", "./src/theme/partials/*.php", "!./src/theme/partials/_*.php"], ["compile:themefiles"]);
   });
 
   return gulp.tasks;
