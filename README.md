@@ -44,6 +44,25 @@ __gulp watch__: Watches for changes to PHP files in the `/src` and `/tests` dire
 __gulp phpunit__: Runs `phpunit` in the root of your project. Make sure you have a phpunit.xml set up in the root that describes your test suite.
 
 
+### JavaScript app
+
+```javascript
+gulp.tasks = require("gulp-tasks").jsapp();
+```
+
+(yeoman composer coming soon...)
+
+#### Tasks it creates
+
+__gulp watch__: Watches for changes to certain types of files. When there are changes...
+
+- JavaScript: scripts are compiled to `dist/js`. _FYI: If a JavaScript library you are creating needs unit tests, it should be created as a separate Node package._
+- CSS: SCSS is compiled to `dist/css`.
+- Images: images are moved to `dist/images`.
+
+__gulp build__: Runs the tasks that `gulp watch` runs, except that it only runs it once. Handy for making a release build.
+
+
 ### WordPress Plugin
 
 ```javascript

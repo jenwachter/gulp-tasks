@@ -30,6 +30,20 @@ taskTypes.prototype.images = function () {
   return _.extend(getTask.images(), getTask.release());
 };
 
+taskTypes.prototype.jsapp = function () {
+
+  gulp.tasks = _.extend(getTask.js(), getTask.css(), getTask.images(), getTask.release());
+
+  gulp.task("watch", ["compile:js", "compile:css", "move:images"], function () {
+    gulp.watch(paths.js.watch, ["compile:js"]);
+    gulp.watch(paths.css.watch, ["compile:css"]);
+    gulp.watch(paths.images.watch, ["move:images"]);
+  });
+
+  return gulp.tasks;
+
+};
+
 taskTypes.prototype.wptheme = function () {
   
   gulp.tasks = _.extend(getTask.js(), getTask.css(), getTask.images(), getTask.wptheme(), getTask.php(), getTask.release());
@@ -39,7 +53,7 @@ taskTypes.prototype.wptheme = function () {
     gulp.watch(paths.css.watch, ["compile:css"]);
     gulp.watch(paths.images.watch, ["move:images"]);
     gulp.watch(paths.php.watch, ["phpunit"]);
-    gulp.watch(["./src/theme/controllers/*.php", "./src/theme/functions.php"], ["compile:themefiles"]);
+    gulp.watch(["./src/theme/controllers/*.php", "./src/theme/partials/*.php", "!./src/theme/partials/_*.php"], ["compile:themefiles"]);
   });
 
   return gulp.tasks;
