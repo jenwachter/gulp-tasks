@@ -12,7 +12,9 @@ var getTask = {
   release: require("./lib/tasks-release")
 };
 
-var taskTypes = function () {};
+var taskTypes = function () {
+  this.paths = paths;
+};
 
 taskTypes.prototype.php = function () {
   return _.extend(getTask.php(), getTask.release());
@@ -45,7 +47,7 @@ taskTypes.prototype.jsapp = function () {
 };
 
 taskTypes.prototype.wptheme = function () {
-  
+
   gulp.tasks = _.extend(getTask.js(), getTask.css(), getTask.images(), getTask.wptheme(), getTask.php(), getTask.release());
 
   gulp.task("watch", ["compile:js", "compile:css", "move:images", "phpunit", "compile:themefiles"], function () {
