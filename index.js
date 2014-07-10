@@ -50,8 +50,10 @@ taskTypes.prototype.wptheme = function () {
 
   gulp.tasks = _.extend(getTask.js(), getTask.css(), getTask.images(), getTask.wptheme(), getTask.php(), getTask.release());
 
-  gulp.task("watch", ["compile:js", "compile:css", "move:images", "phpunit", "compile:themefiles"], function () {
-    gulp.watch(paths.js.watch, ["compile:js"]);
+  gulp.task("default", ["compile:js", "move:vendorjs", "compile:css", "move:images", "phpunit", "compile:themefiles"]);
+
+  gulp.task("watch", ["default"], function () {
+    gulp.watch(paths.js.watch, ["compile:js", "move:vendorjs"]);
     gulp.watch(paths.css.watch, ["compile:css"]);
     gulp.watch(paths.images.watch, ["move:images"]);
     gulp.watch(paths.php.watch, ["phpunit"]);
