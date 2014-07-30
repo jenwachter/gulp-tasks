@@ -52,6 +52,15 @@ gulp.tasks = require("gulp-tasks").jsapp();
 
 (yeoman composer coming soon...)
 
+
+### Node app
+
+```javascript
+gulp.tasks = require("gulp-tasks").nodeapp();
+```
+
+(yeoman composer coming soon...)
+
 #### Tasks it creates
 
 __gulp watch__: Watches for changes to certain types of files. When there are changes...

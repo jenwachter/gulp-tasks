@@ -7,12 +7,15 @@ var getTask = {
   php: require("./lib/tasks-php"),
   js: require("./lib/tasks-js"),
   css: require("./lib/tasks-css"),
+  node: require("./lib/tasks-node"),
   images: require("./lib/tasks-images"),
   wptheme: require("./lib/tasks-wptheme"),
   release: require("./lib/tasks-release")
 };
 
-var taskTypes = function () {};
+var taskTypes = function () {
+  this.paths = paths;
+};
 
 taskTypes.prototype.php = function () {
   return _.extend(getTask.php(), getTask.release());
@@ -30,6 +33,12 @@ taskTypes.prototype.images = function () {
   return _.extend(getTask.images(), getTask.release());
 };
 
+taskTypes.prototype.nodeapp = function () {
+
+  return _.extend(getTask.node(), getTask.release());
+
+};
+
 taskTypes.prototype.jsapp = function () {
 
   gulp.tasks = _.extend(getTask.js(), getTask.css(), getTask.images(), getTask.release());
@@ -45,15 +54,17 @@ taskTypes.prototype.jsapp = function () {
 };
 
 taskTypes.prototype.wptheme = function () {
-  
+
   gulp.tasks = _.extend(getTask.js(), getTask.css(), getTask.images(), getTask.wptheme(), getTask.php(), getTask.release());
 
-  gulp.task("watch", ["compile:js", "compile:css", "move:images", "phpunit", "compile:themefiles"], function () {
-    gulp.watch(paths.js.watch, ["compile:js"]);
+  gulp.task("default", ["compile:js", "move:vendorjs", "compile:css", "move:images", "phpunit", "compile:themefiles"]);
+
+  gulp.task("watch", ["default"], function () {
+    gulp.watch(paths.js.watch, ["compile:js", "move:vendorjs"]);
     gulp.watch(paths.css.watch, ["compile:css"]);
     gulp.watch(paths.images.watch, ["move:images"]);
     gulp.watch(paths.php.watch, ["phpunit"]);
-    gulp.watch(["./src/theme/controllers/*.php", "./src/theme/partials/*.php", "!./src/theme/partials/_*.php"], ["compile:themefiles"]);
+    gulp.watch(["./src/theme/controllers/*.php", "./src/theme/functions.php"], ["compile:themefiles"]);
   });
 
   return gulp.tasks;
@@ -64,8 +75,10 @@ taskTypes.prototype.wpplugin = function () {
 
   gulp.tasks = _.extend(getTask.js(), getTask.css(), getTask.images(), getTask.php(), getTask.release());
 
-  gulp.task("watch", ["compile:js", "compile:css", "move:images", "phpunit"], function () {
-    gulp.watch(paths.js.watch, ["compile:js"]);
+  gulp.task("default", ["compile:js", "move:vendorjs", "compile:css", "move:images", "phpunit"]);
+
+  gulp.task("watch", ["default"], function () {
+    gulp.watch(paths.js.watch, ["compile:js", "move:vendorjs"]);
     gulp.watch(paths.css.watch, ["compile:css"]);
     gulp.watch(paths.images.watch, ["move:images"]);
     gulp.watch(paths.php.watch, ["phpunit"]);
