@@ -10,7 +10,8 @@ var getTask = {
   node: require("./lib/tasks-node"),
   images: require("./lib/tasks-images"),
   wptheme: require("./lib/tasks-wptheme"),
-  release: require("./lib/tasks-release")
+  release: require("./lib/tasks-release"),
+  fonts: require("./lib/tasks-fonts")
 };
 
 var taskTypes = function () {
@@ -26,7 +27,7 @@ taskTypes.prototype.js = function () {
 };
 
 taskTypes.prototype.css = function () {
-  return _.extend(getTask.css(), getTask.release());
+  return _.extend(getTask.css(), getTask.fonts(), getTask.release());
 };
 
 taskTypes.prototype.images = function () {
@@ -41,12 +42,13 @@ taskTypes.prototype.nodeapp = function () {
 
 taskTypes.prototype.jsapp = function () {
 
-  gulp.tasks = _.extend(getTask.js(), getTask.css(), getTask.images(), getTask.release());
+  gulp.tasks = _.extend(getTask.js(), getTask.css(), getTask.images(), getTask.fonts(), getTask.release());
 
-  gulp.task("watch", ["compile:js", "compile:css", "move:images"], function () {
+  gulp.task("watch", ["compile:js", "compile:css", "rsync:images", "rsync:fonts"], function () {
     gulp.watch(paths.js.watch, ["compile:js"]);
     gulp.watch(paths.css.watch, ["compile:css"]);
-    gulp.watch(paths.images.watch, ["move:images"]);
+    gulp.watch(paths.images.watch, ["rsync:images"]);
+    gulp.watch(paths.fonts.watch, ["rsync:fonts"]);
   });
 
   return gulp.tasks;
@@ -55,14 +57,15 @@ taskTypes.prototype.jsapp = function () {
 
 taskTypes.prototype.wptheme = function () {
 
-  gulp.tasks = _.extend(getTask.js(), getTask.css(), getTask.images(), getTask.wptheme(), getTask.php(), getTask.release());
+  gulp.tasks = _.extend(getTask.js(), getTask.css(), getTask.images(), getTask.fonts(), getTask.wptheme(), getTask.php(), getTask.release());
 
-  gulp.task("default", ["compile:js", "move:vendorjs", "compile:css", "move:images", "phpunit", "compile:themefiles"]);
+  gulp.task("default", ["compile:js", "move:vendorjs", "compile:css", "rsync:images", "rsync:fonts", "phpunit", "compile:themefiles"]);
 
   gulp.task("watch", ["default"], function () {
     gulp.watch(paths.js.watch, ["compile:js", "move:vendorjs"]);
     gulp.watch(paths.css.watch, ["compile:css"]);
-    gulp.watch(paths.images.watch, ["move:images"]);
+    gulp.watch(paths.images.watch, ["rsync:images"]);
+    gulp.watch(paths.fonts.watch, ["rsync:fonts"]);
     gulp.watch(paths.php.watch, ["phpunit"]);
     gulp.watch(["./src/theme/controllers/*.php", "./src/theme/functions.php"], ["compile:themefiles"]);
   });
@@ -73,14 +76,15 @@ taskTypes.prototype.wptheme = function () {
 
 taskTypes.prototype.wpplugin = function () {
 
-  gulp.tasks = _.extend(getTask.js(), getTask.css(), getTask.images(), getTask.php(), getTask.release());
+  gulp.tasks = _.extend(getTask.js(), getTask.css(), getTask.images(), getTask.fonts(), getTask.php(), getTask.release());
 
-  gulp.task("default", ["compile:js", "move:vendorjs", "compile:css", "move:images", "phpunit"]);
+  gulp.task("default", ["compile:js", "move:vendorjs", "compile:css", "rsync:images", "rsync:fonts", "phpunit"]);
 
   gulp.task("watch", ["default"], function () {
     gulp.watch(paths.js.watch, ["compile:js", "move:vendorjs"]);
     gulp.watch(paths.css.watch, ["compile:css"]);
-    gulp.watch(paths.images.watch, ["move:images"]);
+    gulp.watch(paths.images.watch, ["rsync:images"]);
+    gulp.watch(paths.fonts.watch, ["rsync:fonts"]);
     gulp.watch(paths.php.watch, ["phpunit"]);
   });
 
