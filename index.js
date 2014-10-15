@@ -3,7 +3,7 @@ var _ = require("underscore");
 var argv = require("minimist")(process.argv.slice(2));
 var paths = require("./lib/paths");
 
-var getTask = {
+var taskTypes = {
   php: require("./lib/tasks-php"),
   js: require("./lib/tasks-js"),
   css: require("./lib/tasks-css"),
@@ -14,35 +14,47 @@ var getTask = {
   fonts: require("./lib/tasks-fonts")
 };
 
-var taskTypes = function () {
+var config = {};
+
+var gulpTaskCreator = function () {
   this.paths = paths;
 };
 
-taskTypes.prototype.php = function () {
-  return _.extend(getTask.php(), getTask.release());
+gulpTaskCreator.prototype.setConfig = function (config) {
+  config = config;
 };
 
-taskTypes.prototype.js = function () {
-  return _.extend(getTask.js(), getTask.release());
+
+function getTask (type) {
+
+  var tasks = new taskTypes[type](config);
+  return tasks.get();
+
+}
+
+gulpTaskCreator.prototype.php = function () {
+  return _.extend(getTask("php"), getTask("release"));
 };
 
-taskTypes.prototype.css = function () {
-  return _.extend(getTask.css(), getTask.fonts(), getTask.release());
+gulpTaskCreator.prototype.js = function () {
+  return _.extend(getTask("js"), getTask("release"));
 };
 
-taskTypes.prototype.images = function () {
-  return _.extend(getTask.images(), getTask.release());
+gulpTaskCreator.prototype.css = function () {
+  return _.extend(getTask("css"), getTask("fonts"), getTask("release"));
 };
 
-taskTypes.prototype.nodeapp = function () {
-
-  return _.extend(getTask.node(), getTask.release());
-
+gulpTaskCreator.prototype.images = function () {
+  return _.extend(getTask("images"), getTask("release"));
 };
 
-taskTypes.prototype.jsapp = function () {
+gulpTaskCreator.prototype.nodeapp = function () {
+  return _.extend(getTask("node"), getTask("release"));
+};
 
-  gulp.tasks = _.extend(getTask.js(), getTask.css(), getTask.images(), getTask.fonts(), getTask.release());
+gulpTaskCreator.prototype.jsapp = function () {
+
+  gulp.tasks = _.extend(getTask("js"), getTask("css"), getTask("images"), getTask("fonts"), getTask("release"));
 
   gulp.task("watch", ["compile:js", "compile:css", "rsync:images", "rsync:fonts"], function () {
     gulp.watch(paths.js.watch, ["compile:js"]);
@@ -55,9 +67,9 @@ taskTypes.prototype.jsapp = function () {
 
 };
 
-taskTypes.prototype.wptheme = function () {
+gulpTaskCreator.prototype.wptheme = function () {
 
-  gulp.tasks = _.extend(getTask.js(), getTask.css(), getTask.images(), getTask.fonts(), getTask.wptheme(), getTask.php(), getTask.release());
+  gulp.tasks = _.extend(getTask("js"), getTask("css"), getTask("images"), getTask("fonts"), getTask("wptheme"), getTask("php"), getTask("release"));
 
   gulp.task("default", ["compile:js", "move:vendorjs", "compile:css", "rsync:images", "rsync:fonts", "phpunit", "compile:themefiles"]);
 
@@ -74,9 +86,9 @@ taskTypes.prototype.wptheme = function () {
 
 };
 
-taskTypes.prototype.wpplugin = function () {
+gulpTaskCreator.prototype.wpplugin = function () {
 
-  gulp.tasks = _.extend(getTask.js(), getTask.css(), getTask.images(), getTask.fonts(), getTask.php(), getTask.release());
+  gulp.tasks = _.extend(getTask("js"), getTask("css"), getTask("images"), getTask("fonts"), getTask("php"), getTask("release"));
 
   gulp.task("default", ["compile:js", "move:vendorjs", "compile:css", "rsync:images", "rsync:fonts", "phpunit"]);
 
@@ -92,8 +104,8 @@ taskTypes.prototype.wpplugin = function () {
 
 };
 
-taskTypes.prototype.release = function () {
-  return getTask.release();
+gulpTaskCreator.prototype.release = function () {
+  return getTask("release");
 }
 
-module.exports = new taskTypes();
+module.exports = new gulpTaskCreator();
