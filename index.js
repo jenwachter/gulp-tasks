@@ -59,7 +59,9 @@ gulpTaskCreator.prototype.jsapp = function () {
 
   gulp.tasks = _.extend(this.getTask("js"), this.getTask("css"), this.getTask("images"), this.getTask("fonts"), this.getTask("release"));
 
-  gulp.task("watch", ["compile:js", "concat:js", "move:vendorjs", "compile:css", "rsync:images", "rsync:fonts"], function () {
+  gulp.task("default", ["compile:js", "concat:js", "move:vendorjs", "compile:css", "rsync:images", "rsync:fonts"]);
+
+  gulp.task("watch", ["default"], function () {
     gulp.watch(paths.js.watch, ["compile:js", "concat:js", "move:vendorjs"]);
     gulp.watch(paths.css.watch, ["compile:css"]);
     gulp.watch(paths.images.watch, ["rsync:images"]);
