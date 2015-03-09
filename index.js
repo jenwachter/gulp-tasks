@@ -7,6 +7,7 @@ var taskTypes = {
   php: require("./lib/tasks-php"),
   js: require("./lib/tasks-js"),
   css: require("./lib/tasks-css"),
+  less: require("./lib/tasks-less"),
   node: require("./lib/tasks-node"),
   images: require("./lib/tasks-images"),
   wptheme: require("./lib/tasks-wptheme"),
@@ -45,6 +46,10 @@ gulpTaskCreator.prototype.js = function () {
 
 gulpTaskCreator.prototype.css = function () {
   return _.extend(this.getTask("css"), this.getTask("fonts"), this.getTask("release"));
+};
+
+gulpTaskCreator.prototype.less = function () {
+  return _.extend(this.getTask("less"), this.getTask("fonts"), this.getTask("release"));
 };
 
 gulpTaskCreator.prototype.images = function () {
