@@ -3,7 +3,7 @@ var _ = require("underscore");
 var argv = require("minimist")(process.argv.slice(2));
 var paths = require("./lib/paths");
 
-var taskTypes = {
+var tasks = {
   php: require("./lib/tasks-php"),
   js: require("./lib/tasks-js"),
   css: require("./lib/tasks-css"),
@@ -14,28 +14,30 @@ var taskTypes = {
   release: require("./lib/tasks-release"),
   fonts: require("./lib/tasks-fonts")
 };
-var gulpTaskCreator = function () {
+
+var Tasker = function () {
   this.paths = paths;
   this.config = {};
+  this.tasks = tasks;
 };
 
-gulpTaskCreator.prototype.setConfig = function (config) {
+Tasker.prototype.setConfig = function (config) {
   if (config) this.config = config;
 };
 
 
-gulpTaskCreator.prototype.getTask = function (type) {
+Tasker.prototype.getTask = function (type) {
 
-  var tasks = new taskTypes[type](this.config);
+  var tasks = new this.tasks[type](this.config);
   return tasks.get();
 
 };
 
-gulpTaskCreator.prototype.php = function () {
+Tasker.prototype.php = function () {
   return _.extend(this.getTask("php"), this.getTask("release"));
 };
 
-gulpTaskCreator.prototype.js = function () {
+Tasker.prototype.js = function () {
 
   gulp.tasks = _.extend(this.getTask("js"), this.getTask("release"));
   gulp.task("default", ["compile:js", "concat:js", "move:vendorjs", "test:js"]);
@@ -44,23 +46,23 @@ gulpTaskCreator.prototype.js = function () {
 
 };
 
-gulpTaskCreator.prototype.css = function () {
+Tasker.prototype.css = function () {
   return _.extend(this.getTask("css"), this.getTask("fonts"), this.getTask("release"));
 };
 
-gulpTaskCreator.prototype.less = function () {
+Tasker.prototype.less = function () {
   return _.extend(this.getTask("less"), this.getTask("fonts"), this.getTask("release"));
 };
 
-gulpTaskCreator.prototype.images = function () {
+Tasker.prototype.images = function () {
   return _.extend(this.getTask("images"), this.getTask("release"));
 };
 
-gulpTaskCreator.prototype.nodeapp = function () {
+Tasker.prototype.nodeapp = function () {
   return _.extend(this.getTask("node"), this.getTask("release"));
 };
 
-gulpTaskCreator.prototype.jsapp = function () {
+Tasker.prototype.jsapp = function () {
 
   gulp.tasks = _.extend(this.getTask("js"), this.getTask("css"), this.getTask("images"), this.getTask("fonts"), this.getTask("release"));
 
@@ -77,7 +79,7 @@ gulpTaskCreator.prototype.jsapp = function () {
 
 };
 
-gulpTaskCreator.prototype.wptheme = function () {
+Tasker.prototype.wptheme = function () {
 
   gulp.tasks = _.extend(this.getTask("js"), this.getTask("css"), this.getTask("images"), this.getTask("fonts"), this.getTask("wptheme"), this.getTask("php"), this.getTask("release"));
   gulp.task("default", ["compile:js", "concat:js", "move:vendorjs", "compile:css", "rsync:images", "rsync:fonts", "phpunit", "compile:themefiles"]);
@@ -95,7 +97,7 @@ gulpTaskCreator.prototype.wptheme = function () {
 
 };
 
-gulpTaskCreator.prototype.wpplugin = function () {
+Tasker.prototype.wpplugin = function () {
 
   gulp.tasks = _.extend(this.getTask("js"), this.getTask("css"), this.getTask("images"), this.getTask("fonts"), this.getTask("php"), this.getTask("release"));
 
@@ -113,8 +115,8 @@ gulpTaskCreator.prototype.wpplugin = function () {
 
 };
 
-gulpTaskCreator.prototype.release = function () {
+Tasker.prototype.release = function () {
   return this.getTask("release");
 }
 
-module.exports = new gulpTaskCreator();
+module.exports = new Tasker();
