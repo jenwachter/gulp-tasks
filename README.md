@@ -27,6 +27,34 @@ gulp.task("anotherTask", function () {
 });
 ```
 
+## Config Example
+
+```javascript
+{
+  js: {
+    jshintrc: "./config/jshintrc.json",     // location of jshintrc config file
+    concat: {                               // file concatenation config
+      base: [                               // filename of resulting file
+        "./test/src/js/bundle/one.js",      // location of file to concatenate into resulting file
+        "./test/src/js/bundle/two.js"       // ^^^
+      ]
+    },
+    compile: {
+      src: ["./test/src/js/*.js"],          // source blob of files to compile using browserify
+      transform: [templateTransform]        // transform functions (use node-underscorify module)
+    },
+    watch: [                                // blob of files to watch. when they change, run js tasks
+      "./test/src/js/**/*.js",
+      "./test/src/js/templates/*.html",
+      "!./test/src/js/vendor/**/*.js"
+    ],
+    vendor: ["./test/src/js/vendor/*.js"],  // vendor files to move to build/vendor or dist/vendor
+    build: "./test/build/js",               // development build directory
+    dist: "./test/dist/js"                  // distribution build directory
+  }
+}
+```
+
 ## Project types and what they do
 
 ### PHP
