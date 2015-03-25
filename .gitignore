@@ -1,10 +1,5 @@
 node_modules
 npm-debug.log
-
-# testing
-.sass-cache
-config
-dist
-src
-gulpfile.js
 test
+gulpfile.js
+config
