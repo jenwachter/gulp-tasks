@@ -6,10 +6,9 @@ var taskTypes = {
   scss: require("./lib/tasks-scss"),
   less: require("./lib/tasks-less"),
   node: require("./lib/tasks-node"),
-  images: require("./lib/tasks-images"),
   wptheme: require("./lib/tasks-wptheme"),
   release: require("./lib/tasks-release"),
-  fonts: require("./lib/tasks-fonts")
+  move: require("./lib/tasks-move")
 };
 
 /**
