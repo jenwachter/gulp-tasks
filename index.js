@@ -32,7 +32,7 @@ Tasker.prototype.add = function (taskType) {
 
   // get more tasks
   var taskConfig = this.config[taskType];
-  var moreTasks = new taskTypes[taskType](taskConfig).get();
+  var moreTasks = taskTypes[taskType](taskConfig);
 
   // add tasks to gulp instance
   this.gulpInstannce.tasks = _.extend(this.gulpInstannce.tasks, moreTasks);
