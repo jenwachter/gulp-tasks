@@ -53,17 +53,18 @@ gulp.task("anotherTask", function () {
     dist: "./test/dist/js"                  // distribution build directory
   },
 
-  images: {
-    rsync: "./test/src/images/",            // location of images to move
-    build: "./test/build/images",           // development build directory
-    dist: "./test/dist/images"              // distribution build directory
-  },
-
-  scss: {
-    src: ["./test/src/css/*.scss"],         // location of scss files to compile
-    build: "./test/build/css",              // development build directory
-    dist: "./test/dist/css"                 // distribution build directory
-  }
+  move: [                                   // array of files to move
+    {
+      src:"./test/src/images/",             // location of files to move
+      build: "./test/build/images",         // development build directory
+      dist: "./test/dist/images"            // distribution build directory
+    },
+    {
+      src:"./test/src/fonts/",
+      build: "./test/build/fonts",
+      dist: "./test/dist/fonts"
+    }
+  ]
 }
 ```
 
