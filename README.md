@@ -51,6 +51,18 @@ gulp.task("anotherTask", function () {
     vendor: ["./test/src/js/vendor/*.js"],  // vendor files to move to build/vendor or dist/vendor
     build: "./test/build/js",               // development build directory
     dist: "./test/dist/js"                  // distribution build directory
+  },
+
+  images: {
+    rsync: "./test/src/images/",            // location of images to move
+    build: "./test/build/images",           // development build directory
+    dist: "./test/dist/images"              // distribution build directory
+  },
+
+  scss: {
+    src: ["./test/src/css/*.scss"],         // location of scss files to compile
+    build: "./test/build/css",              // development build directory
+    dist: "./test/dist/css"                 // distribution build directory
   }
 }
 ```
