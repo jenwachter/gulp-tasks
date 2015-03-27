@@ -3,7 +3,7 @@ var _ = require("underscore");
 var taskTypes = {
   php: require("./lib/tasks-php"),
   js: require("./lib/tasks-js"),
-  css: require("./lib/tasks-css"),
+  scss: require("./lib/tasks-scss"),
   less: require("./lib/tasks-less"),
   node: require("./lib/tasks-node"),
   images: require("./lib/tasks-images"),
