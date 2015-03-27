@@ -4,7 +4,6 @@ var taskTypes = {
   js: require("./lib/tasks-js"),
   scss: require("./lib/tasks-scss"),
   less: require("./lib/tasks-less"),
-  node: require("./lib/tasks-node"),
   wptheme: require("./lib/tasks-wptheme"),
   release: require("./lib/tasks-release"),
   move: require("./lib/tasks-move")
