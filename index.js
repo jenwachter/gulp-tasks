@@ -1,9 +1,6 @@
-var gulp = require("gulp");
 var _ = require("underscore");
-var argv = require("minimist")(process.argv.slice(2));
-var paths = require("./lib/paths");
 
-var tasks = {
+var taskTypes = {
   php: require("./lib/tasks-php"),
   js: require("./lib/tasks-js"),
   css: require("./lib/tasks-css"),
@@ -15,108 +12,43 @@ var tasks = {
   fonts: require("./lib/tasks-fonts")
 };
 
-var Tasker = function () {
-  this.paths = paths;
-  this.config = {};
-  this.tasks = tasks;
-};
+/**
+ * Tasker constructor
+ * @param {obejct} gulpInstannce Instance of gulp
+ * @param {obejct} config        Configuration
+ */
+var Tasker = function (gulpInstannce, config) {
 
-Tasker.prototype.setConfig = function (config) {
-  if (config) this.config = config;
-};
-
-
-Tasker.prototype.getTask = function (type) {
-
-  var tasks = new this.tasks[type](this.config);
-  return tasks.get();
+  this.gulpInstannce = gulpInstannce;
+  this.config = config || {};
 
 };
 
-Tasker.prototype.php = function () {
-  return _.extend(this.getTask("php"), this.getTask("release"));
-};
+/**
+ * Add a set of tasks to the instance of gulp
+ * @param {string} taskType Task type
+ */
+Tasker.prototype.add = function (taskType) {
 
-Tasker.prototype.js = function () {
+  // get more tasks
+  var taskConfig = this.config[taskType];
+  var moreTasks = new taskTypes[taskType](taskConfig).get();
 
-  gulp.tasks = _.extend(this.getTask("js"), this.getTask("release"));
-  gulp.task("default", ["compile:js", "concat:js", "move:vendorjs", "test:js"]);
+  // add tasks to gulp instance
+  this.gulpInstannce.tasks = _.extend(this.gulpInstannce.tasks, moreTasks);
 
-  return gulp.tasks;
-
-};
-
-Tasker.prototype.css = function () {
-  return _.extend(this.getTask("css"), this.getTask("fonts"), this.getTask("release"));
-};
-
-Tasker.prototype.less = function () {
-  return _.extend(this.getTask("less"), this.getTask("fonts"), this.getTask("release"));
-};
-
-Tasker.prototype.images = function () {
-  return _.extend(this.getTask("images"), this.getTask("release"));
-};
-
-Tasker.prototype.nodeapp = function () {
-  return _.extend(this.getTask("node"), this.getTask("release"));
-};
-
-Tasker.prototype.jsapp = function () {
-
-  gulp.tasks = _.extend(this.getTask("js"), this.getTask("css"), this.getTask("images"), this.getTask("fonts"), this.getTask("release"));
-
-  gulp.task("default", ["compile:js", "concat:js", "move:vendorjs", "compile:css", "rsync:images", "rsync:fonts"]);
-
-  gulp.task("watch", ["default"], function () {
-    gulp.watch(paths.js.watch, ["compile:js", "concat:js", "move:vendorjs"]);
-    gulp.watch(paths.css.watch, ["compile:css"]);
-    gulp.watch(paths.images.watch, ["rsync:images"]);
-    gulp.watch(paths.fonts.watch, ["rsync:fonts"]);
-  });
-
-  return gulp.tasks;
+  // return Tasker object to enable chaining
+  return this;
 
 };
 
-Tasker.prototype.wptheme = function () {
+/**
+ * Retrieve gulp tasks
+ */
+Tasker.prototype.getTasks = function () {
 
-  gulp.tasks = _.extend(this.getTask("js"), this.getTask("css"), this.getTask("images"), this.getTask("fonts"), this.getTask("wptheme"), this.getTask("php"), this.getTask("release"));
-  gulp.task("default", ["compile:js", "concat:js", "move:vendorjs", "compile:css", "rsync:images", "rsync:fonts", "phpunit", "compile:themefiles"]);
-
-  gulp.task("watch", ["default"], function () {
-    gulp.watch(paths.js.watch, ["compile:js", "concat:js", "move:vendorjs"]);
-    gulp.watch(paths.css.watch, ["compile:css"]);
-    gulp.watch(paths.images.watch, ["rsync:images"]);
-    gulp.watch(paths.fonts.watch, ["rsync:fonts"]);
-    gulp.watch(paths.php.watch, ["phpunit"]);
-    gulp.watch(["./src/theme/controllers/*.php", "./src/theme/functions.php"], ["compile:themefiles"]);
-  });
-
-  return gulp.tasks;
+  return this.gulpInstannce.tasks;
 
 };
 
-Tasker.prototype.wpplugin = function () {
-
-  gulp.tasks = _.extend(this.getTask("js"), this.getTask("css"), this.getTask("images"), this.getTask("fonts"), this.getTask("php"), this.getTask("release"));
-
-  gulp.task("default", ["compile:js", "concat:js", "move:vendorjs", "compile:css", "rsync:images", "rsync:fonts", "phpunit"]);
-
-  gulp.task("watch", ["default"], function () {
-    gulp.watch(paths.js.watch, ["compile:js", "concat:js", "move:vendorjs"]);
-    gulp.watch(paths.css.watch, ["compile:css"]);
-    gulp.watch(paths.images.watch, ["rsync:images"]);
-    gulp.watch(paths.fonts.watch, ["rsync:fonts"]);
-    gulp.watch(paths.php.watch, ["phpunit"]);
-  });
-
-  return gulp.tasks;
-
-};
-
-Tasker.prototype.release = function () {
-  return this.getTask("release");
-}
-
-module.exports = new Tasker();
+module.exports = Tasker;
