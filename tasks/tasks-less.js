@@ -7,11 +7,13 @@ var rimraf = require("gulp-rimraf");
 var argv = require("minimist")(process.argv.slice(2));
 var minify = require("gulp-minify-css");
 
+var Destination = require("../lib/destination");
+
 module.exports = function (config) {
 
   config = config || {};
-  var destination = argv.production || argv.staging ? config.dist : config.build;
-
+  var destination = Destination.find(config);
+  
   gulp.task("remove:less", function () {
     return gulp.src(destination)
       .pipe(rimraf());

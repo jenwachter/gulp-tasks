@@ -3,12 +3,14 @@ var _ = require("underscore");
 var argv = require("minimist")(process.argv.slice(2));
 var Rsync = require("rsync");
 var fs = require("fs");
-var mkdirp = require('mkdirp');
+var mkdirp = require("mkdirp");
+
+var Destination = require("../lib/destination");
 
 module.exports = function (config) {
 
   config = config || [];
-  var destinationFolder = argv.production || argv.staging ? "dist" : "build";
+  var destinationFolder = Destination.findFolder();
 
   /**
    * Moves files from one location to another

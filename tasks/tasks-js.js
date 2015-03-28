@@ -11,11 +11,13 @@ var uglify = require("gulp-uglify");
 var concat = require("gulp-concat");
 var through2 = require("through2");
 
+var Destination = require("../lib/destination");
+
 
 module.exports = function (config) {
 
   config = config || {};
-  var destination = argv.production || argv.staging ? config.dist : config.build;
+  var destination = Destination.find(config);
 
   /**
    * Remove previously compiled files
