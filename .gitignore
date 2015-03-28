@@ -3,3 +3,4 @@ npm-debug.log
 test
 gulpfile.js
 config
+.sass-cache
