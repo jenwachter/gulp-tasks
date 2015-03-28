@@ -1,10 +1,10 @@
 var _ = require("underscore");
 
 var taskTypes = {
-  js: require("./lib/tasks-js"),
-  scss: require("./lib/tasks-scss"),
-  less: require("./lib/tasks-less"),
-  move: require("./lib/tasks-move")
+  js: require("./tasks/tasks-js"),
+  scss: require("./tasks/tasks-scss"),
+  less: require("./tasks/tasks-less"),
+  move: require("./tasks/tasks-move")
 };
 
 /**
