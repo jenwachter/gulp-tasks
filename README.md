@@ -1,153 +1,126 @@
 # gulp-tasks
 
-A collection of gulp tasks for various types of projects.
+A collection of common gulp tasks for website projects. Task collections include:
+
+* __JavaScript tasks__
+  * concatenate multiple source files into one file
+  * compile source files that use the Node.js `require("module");` pattern
+  * run jshint on files
+  * minify files for production
+* __SCSS tasks__
+  * compile .scss source files into .css files
+  * run csslint on files
+  * minify files for production
+* __LESS tasks__
+  * compile .less source files into .css files
+  * run csslint on files
+  * minify files for production
+* __Move task__
+  * simply move files from a source directory into development and production folders. Use cases for this task include images and fonts.
 
 ## Install
 
-Install both gulp and gulp-tasks as development dependencies
+Install gulp-tasks as a development dependency:
 
 ```bash
-npm install gulp git+ssh://git@github.com:johnshopkins/gulp-tasks.git --save-dev
+npm install git+ssh://git@github.com:jenwachter/gulp-tasks.git --save-dev
 ```
 
 ## Implementation
 
-Implementation in projects:
-
 ```javascript
-// require gulp
 var gulp = require("gulp");
+var Tasker = require("gulp-tasks");
 
-// assign gulp.tasks to the appropiate project
-gulp.tasks = require("gulp-tasks").php();
+// configure Tasker
+var gulpTasker = new Tasker(gulp, {
 
-// add or override existing tasks
-gulp.task("anotherTask", function () {
-  // do stuff
-});
-```
-
-## Config Example
-
-```javascript
-{
   js: {
-    jshintrc: "./config/jshintrc.json",     // location of jshintrc config file
-    concat: {                               // file concatenation config
-      base: [                               // filename of resulting file
-        "./test/src/js/bundle/one.js",      // location of file to concatenate into resulting file
-        "./test/src/js/bundle/two.js"       // ^^^
+
+    concat: {
+      // resulting filename
+      base: [
+
+        // Array of files to concatenate
+        "./src/js/bundle/one.js",
+        "./src/js/bundle/two.js"
       ]
     },
+
     compile: {
-      src: ["./test/src/js/*.js"],          // source blob of files to compile using browserify
-      transform: [templateTransform]        // transform functions (use node-underscorify module)
+      // A glob object that defines the files to compile
+      src: ["./src/js/*.js"],
+
+      // An array of transforms (see: http://bit.ly/1F4oex3)
+      transform: []
     },
-    watch: [                                // blob of files to watch. when they change, run js tasks
-      "./test/src/js/**/*.js",
-      "./test/src/js/templates/*.html",
-      "!./test/src/js/vendor/**/*.js"
-    ],
-    vendor: ["./test/src/js/vendor/*.js"],  // vendor files to move to build/vendor or dist/vendor
-    build: "./test/build/js",               // development build directory
-    dist: "./test/dist/js"                  // distribution build directory
+
+    hint: {
+      // A glob object that defines the files to run through jshint
+      src: ["./src/js/**/*.js"],
+
+      // The location of the jshintrc.json file or an object with this configuration
+      jshintrc: "./config/jshintrc.json"
+    },
+
+    // Location to put development build files
+    build: "./build/js",
+
+    // Location to put distribution build files
+    dist: "./dist/js"
   },
 
-  move: [                                   // array of files to move
+  move: [
     {
-      src:"./test/src/images/",             // location of files to move
-      build: "./test/build/images",         // development build directory
-      dist: "./test/dist/images"            // distribution build directory
-    },
-    {
-      src:"./test/src/fonts/",
-      build: "./test/build/fonts",
-      dist: "./test/dist/fonts"
+      // A glob object that defines the files to move
+      src:"./src/images/",
+
+      // Location to put development build files
+      build: "./build/images",
+
+      // Location to put distribution build files
+      dist: "./dist/images"
     }
-  ]
-}
+  ],
+
+  scss: {
+
+    lint: {,
+      // A glob object that defines the files to run through csslint
+      src: ["./src/scss/*.scss"],
+
+      // The location of the csslintrc.json file or an object with this configuration
+      csslintrc: {}
+    },
+
+    // A glob object that defines the files to move
+    src: ["./src/scss/*.scss"],
+
+    // Location to put development build files
+    build: "./build/scss",
+
+    // Location to put distribution build files
+    dist: "./dist/scss"
+  }
+
+});
+
+// add tasks
+gulp.tasks = gulpTasker
+  .add("js")
+  .add("move")
+  .add("scss")
+  .get();
+
+// create default task
+gulp.task("default", ["default:js", "default:move", "default:scss", "default:less"]);
+
+// create watch task
+gulp.task("watch", ["default"], function () {
+
+  gulp.watch(["./src/js/**/*.js", "./src/js/templates/**/*.html"], ["default:js"]);
+  gulp.watch(["./src/images/**/*"], ["default:move"]);
+  gulp.watch(["./src/scss/**/*.scss"], ["default:scss"]);
+
+});
 ```
-
-## Project types and what they do
-
-### PHP
-
-```javascript
-gulp.tasks = require("gulp-tasks").php();
-```
-
-Tasks assume file structure created by [johnshopkins/generator-composer](https://github.com/johnshopkins/generator-composer).
-
-#### Tasks it creates
-
-__gulp watch__: Watches for changes to PHP files in the `/src` and `/tests` directories for changes and runs `phpunit` task when changes are made.
-
-__gulp phpunit__: Runs `phpunit` in the root of your project. Make sure you have a phpunit.xml set up in the root that describes your test suite.
-
-
-### JavaScript app
-
-```javascript
-gulp.tasks = require("gulp-tasks").jsapp();
-```
-
-(yeoman composer coming soon...)
-
-
-### Node app
-
-```javascript
-gulp.tasks = require("gulp-tasks").nodeapp();
-```
-
-(yeoman composer coming soon...)
-
-#### Tasks it creates
-
-__gulp watch__: Watches for changes to certain types of files. When there are changes...
-
-- JavaScript: scripts are compiled to `dist/js`. _FYI: If a JavaScript library you are creating needs unit tests, it should be created as a separate Node package._
-- CSS: SCSS is compiled to `dist/css`.
-- Images: images are moved to `dist/images`.
-
-__gulp build__: Runs the tasks that `gulp watch` runs, except that it only runs it once. Handy for making a release build.
-
-
-### WordPress Plugin
-
-```javascript
-gulp.tasks = require("gulp-tasks").wpplugin();
-```
-
-Tasks assume file structure created by [johnshopkins/generator-wp-plugin](https://github.com/johnshopkins/generator-wp-plugin).
-
-#### Tasks it creates
-
-__gulp watch__: Watches for changes to certain types of files. When there are changes...
-
-- JavaScript: scripts are compiled to `dist/js`. _FYI: If a JavaScript library you are creating needs unit tests, it should be created as a separate Node package._
-- CSS: SCSS is compiled to `dist/css`.
-- Images: images are moved to `dist/images`.
-- PHP: unit tests are run.
-
-__gulp build__: Runs the tasks that `gulp watch` runs, except that it only runs it once. Handy for making a release build.
-
-
-### WordPress Theme
-
-```javascript
-gulp.tasks = require("gulp-tasks").wptheme();
-```
-
-_Yeoman generator to come. For now, look to [machado theme](https://github.com/johnshopkins/machado) for an example of file structure._
-
-#### Tasks it creates
-
-__gulp watch__: Watches for changes to certain types of files. When there are changes...
-
-- JavaScript: scripts are compiled to `dist/js`. _FYI: If a JavaScript library you are creating needs unit tests, it should be created as a separate Node package._
-- CSS: SCSS is compiled to `dist/css`.
-- Images: images are moved to `dist/images`.
-- PHP: Controllers and partials are copied to the root, where WordPress expects them. As of now, unit tests are not part of this task.
-
-__gulp build__: Runs the tasks that `gulp watch` runs, except that it only runs it once. Handy for making a release build.
