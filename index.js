@@ -40,7 +40,7 @@ Tasker.prototype.add = function (taskType) {
 /**
  * Retrieve gulp tasks
  */
-Tasker.prototype.getTasks = function () {
+Tasker.prototype.get = function () {
 
   return this.gulpInstannce.tasks;
 
