@@ -28,20 +28,27 @@ npm install git+ssh://git@github.com:jenwachter/gulp-tasks.git --save-dev
 
 ## Implementation
 
+The implementation of gulp-tasks takes place in your project's `gulpfile.js`.
+
+First, include gulp and gulp-tasks:
+
 ```javascript
 var gulp = require("gulp");
 var Tasker = require("gulp-tasks");
+```
 
-// configure Tasker
+Then create and configure a gulp tasker:
+
+```javascript
 var gulpTasker = new Tasker(gulp, {
 
   js: {
 
     concat: {
-      // resulting filename
+      // resulting filename, sans .js
       base: [
 
-        // Array of files to concatenate
+        // Array of files to concatenate into base.js
         "./src/js/bundle/one.js",
         "./src/js/bundle/two.js"
       ]
@@ -93,34 +100,58 @@ var gulpTasker = new Tasker(gulp, {
       csslintrc: {}
     },
 
-    // A glob object that defines the files to move
+    // A glob object that defines the files to compile
     src: ["./src/scss/*.scss"],
 
     // Location to put development build files
-    build: "./build/scss",
+    build: "./build/css",
 
     // Location to put distribution build files
-    dist: "./dist/scss"
+    dist: "./dist/css"
   }
 
 });
+```
 
-// add tasks
+Now add tasks to gulp:
+
+```javascript
 gulp.tasks = gulpTasker
   .add("js")
   .add("move")
   .add("scss")
   .get();
+```
 
-// create default task
-gulp.task("default", ["default:js", "default:move", "default:scss", "default:less"]);
+This will give you access to all the tasks created in `tasks/tasks-[type].js`. For example, each task type creates a `default:[type]` task, which we can use when we create gulp tasks for our project:
 
-// create watch task
+```javascript
+// compile all files when running `gulp`
+gulp.task("default", ["default:js", "default:move", "default:scss"]);
+
+// after running `gulp watch`, compile all files and watch for changes
 gulp.task("watch", ["default"], function () {
-
-  gulp.watch(["./src/js/**/*.js", "./src/js/templates/**/*.html"], ["default:js"]);
+  gulp.watch(["./src/js/**/*.js"], ["default:js"]);
   gulp.watch(["./src/images/**/*"], ["default:move"]);
   gulp.watch(["./src/scss/**/*.scss"], ["default:scss"]);
-
 });
+```
+
+
+## Build directories
+
+In the configuration, a `build` and `dist` directory is specified for each task type. When developing a project, files are build into the `build` directory. When you are ready to deploy a project, files are built into the `dist` directory. Here's how you do that with gulp tasks:
+
+```javascript
+// build into `build` directory
+gulp
+
+// build into `build` directory on file changes
+gulp watch
+
+// build into `dist` directory
+gulp --staging
+
+// build into `dist` directory and minify files
+gulp --production
 ```
