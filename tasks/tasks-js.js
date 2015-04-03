@@ -68,7 +68,7 @@ module.exports = function (config) {
 
       .pipe(through2.obj(function (file, enc, next) {
 
-        var b = browserify(file.path);
+        var b = browserify(file.path, { debug: !argv.production });
 
         _.each(transforms, function (transform) {
           b.transform(transform);
@@ -81,14 +81,14 @@ module.exports = function (config) {
 
       }))
 
-      // Init sourcemaps (if not gulping for production use)
-      .pipe(gulpif(!argv.production, sourcemaps.init()))
+      // // Init sourcemaps (if not gulping for production use)
+      // .pipe(gulpif(!argv.production, sourcemaps.init()))
 
       // Minify files (if gulping for production use)
       .pipe(gulpif(argv.production, uglify()))
 
-      // Write sourcemaps (if not gulping for production use)
-      .pipe(gulpif(!argv.production, sourcemaps.write()))
+      // // Write sourcemaps (if not gulping for production use)
+      // .pipe(gulpif(!argv.production, sourcemaps.write()))
 
       .pipe(gulp.dest(destination));
 
