@@ -75,8 +75,16 @@ module.exports = function (config) {
         });
 
         b.bundle(function (err, res) {
+
+          if (err) {
+            console.log(err.message);
+            // end this stream
+            this.emit("end");
+          }
+
           file.contents = res;
           next(null, file);
+          
         });
 
       }))
