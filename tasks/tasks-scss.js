@@ -58,7 +58,8 @@ module.exports = function (config) {
       .pipe(gulp.dest(destination))
 
       // IE stylesheets
-      .pipe(gulpif(config.ieBreakpoint, mqRemove(config.ieBreakpoint), gulp.dest(destination + "/ie")));
+      .pipe(gulpif(config.ieBreakpoint, mqRemove(config.ieBreakpoint)))
+      .pipe(gulpif(config.ieBreakpoint, gulp.dest(destination + "/ie")));
 
   });
 
