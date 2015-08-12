@@ -54,7 +54,11 @@ module.exports = function (config) {
         keepSpecialComments: 0
       })))
 
-      .pipe(gulp.dest(destination));
+      .pipe(gulp.dest(destination))
+
+      // IE stylesheets
+      .pipe(mqRemove(config.ieBreakpoint))
+      .pipe(gulp.dest(config.destination + "/ie"));
 
   });
 

@@ -13,7 +13,7 @@ module.exports = function (config) {
 
   config = config || {};
   var destination = Destination.find(config);
-  
+
   gulp.task("remove:less", function () {
     return gulp.src(destination)
       .pipe(rimraf());
@@ -54,7 +54,11 @@ module.exports = function (config) {
         keepSpecialComments: 0
       })))
 
-      .pipe(gulp.dest(destination));
+      .pipe(gulp.dest(destination))
+
+      // IE stylesheets
+      .pipe(mqRemove(config.ieBreakpoint))
+      .pipe(gulp.dest(config.destination + "/ie"));
 
   });
 
