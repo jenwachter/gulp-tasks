@@ -1,7 +1,6 @@
 var gulp = require("gulp");
 var _ = require("underscore");
 var argv = require("minimist")(process.argv.slice(2));
-var Rsync = require("rsync");
 var fs = require("fs");
 var mkdirp = require("mkdirp");
 
@@ -25,10 +24,7 @@ module.exports = function (config) {
       if (!exists) mkdirp.sync(destination);
 
       gulp.src(move.src)
-
-        .pipe(rsync({
-          destination: destination
-        }));
+        .pipe(gulp.dest(destination));
 
     });
 
