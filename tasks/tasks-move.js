@@ -24,13 +24,11 @@ module.exports = function (config) {
       var exists = fs.existsSync(destination);
       if (!exists) mkdirp.sync(destination);
 
-      var rsync = new Rsync()
-        .flags("r")
-        .source(move.src)
-        .progress()
-        .destination(destination);
+      gulp.src(move.src)
 
-      rsync.execute();
+        .pipe(rsync({
+          destination: destination
+        }));
 
     });
 
