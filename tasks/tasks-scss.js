@@ -41,26 +41,26 @@ module.exports = function (config) {
   gulp.task("compile:scss", ["remove:scss"], function () {
 
     return gulp.src(config.src)
-    //
-    //   // Init sourcemaps (if not gulping for production use)
-    //   .pipe(gulpif(!argv.production, sourcemaps.init()))
-    //
-    //   // Run through sass compiler and create a source map if not gulping for production
-    //   .pipe(sass())
-    //
-    //   // Write sourcemaps (if not gulping for production use)
-    //   .pipe(gulpif(!argv.production, sourcemaps.write()))
-    //
-    //   // Minify files if gulping for production use
-    //   .pipe(gulpif(argv.production, minify({
-    //     keepSpecialComments: 0
-    //   })))
-    //
-    //   .pipe(gulp.dest(destination))
-    //
-    //   // IE stylesheets
-    //   .pipe(gulpif(config.ieBreakpoint, mqRemove(config.ieBreakpoint)))
-    //   .pipe(gulpif(config.ieBreakpoint, gulp.dest(destination + "/ie")));
+
+      // Init sourcemaps (if not gulping for production use)
+      .pipe(gulpif(!argv.production, sourcemaps.init()))
+
+      // Run through sass compiler and create a source map if not gulping for production
+      .pipe(sass())
+
+      // Write sourcemaps (if not gulping for production use)
+      .pipe(gulpif(!argv.production, sourcemaps.write()))
+
+      // Minify files if gulping for production use
+      .pipe(gulpif(argv.production, minify({
+        keepSpecialComments: 0
+      })))
+
+      .pipe(gulp.dest(destination))
+
+      // IE stylesheets
+      .pipe(gulpif(config.ieBreakpoint, mqRemove(config.ieBreakpoint)))
+      .pipe(gulpif(config.ieBreakpoint, gulp.dest(destination + "/ie")));
 
   });
 
