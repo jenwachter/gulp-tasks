@@ -3,7 +3,7 @@ var gulpif = require("gulp-if");
 var sass = require("gulp-sass");
 var csslint = require("gulp-csslint");
 var sourcemaps = require("gulp-sourcemaps");
-var rimraf = require("gulp-rimraf");
+var del = require("del");
 var argv = require("minimist")(process.argv.slice(2));
 var minify = require("gulp-minify-css");
 var mqRemove = require("gulp-mq-remove");
@@ -15,9 +15,10 @@ module.exports = function (config) {
   config = config || {};
   var destination = Destination.find(config);
 
-  gulp.task("remove:scss", function () {
-    return gulp.src(destination)
-      .pipe(rimraf());
+  gulp.task("remove:scss", function (cb) {
+
+    del(destination, cb);
+
   });
 
   /**
@@ -40,26 +41,26 @@ module.exports = function (config) {
   gulp.task("compile:scss", ["remove:scss"], function () {
 
     return gulp.src(config.src)
-
-      // Init sourcemaps (if not gulping for production use)
-      .pipe(gulpif(!argv.production, sourcemaps.init()))
-
-      // Run through sass compiler and create a source map if not gulping for production
-      .pipe(sass())
-
-      // Write sourcemaps (if not gulping for production use)
-      .pipe(gulpif(!argv.production, sourcemaps.write()))
-
-      // Minify files if gulping for production use
-      .pipe(gulpif(argv.production, minify({
-        keepSpecialComments: 0
-      })))
-
-      .pipe(gulp.dest(destination))
-
-      // IE stylesheets
-      .pipe(gulpif(config.ieBreakpoint, mqRemove(config.ieBreakpoint)))
-      .pipe(gulpif(config.ieBreakpoint, gulp.dest(destination + "/ie")));
+    //
+    //   // Init sourcemaps (if not gulping for production use)
+    //   .pipe(gulpif(!argv.production, sourcemaps.init()))
+    //
+    //   // Run through sass compiler and create a source map if not gulping for production
+    //   .pipe(sass())
+    //
+    //   // Write sourcemaps (if not gulping for production use)
+    //   .pipe(gulpif(!argv.production, sourcemaps.write()))
+    //
+    //   // Minify files if gulping for production use
+    //   .pipe(gulpif(argv.production, minify({
+    //     keepSpecialComments: 0
+    //   })))
+    //
+    //   .pipe(gulp.dest(destination))
+    //
+    //   // IE stylesheets
+    //   .pipe(gulpif(config.ieBreakpoint, mqRemove(config.ieBreakpoint)))
+    //   .pipe(gulpif(config.ieBreakpoint, gulp.dest(destination + "/ie")));
 
   });
 

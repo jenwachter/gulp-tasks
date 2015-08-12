@@ -3,7 +3,7 @@ var gulpif = require("gulp-if");
 var less = require("gulp-less");
 var csslint = require("gulp-csslint");
 var sourcemaps = require("gulp-sourcemaps");
-var rimraf = require("gulp-rimraf");
+var del = require("del");
 var argv = require("minimist")(process.argv.slice(2));
 var minify = require("gulp-minify-css");
 var mqRemove = require("gulp-mq-remove");
@@ -15,9 +15,10 @@ module.exports = function (config) {
   config = config || {};
   var destination = Destination.find(config);
 
-  gulp.task("remove:less", function () {
-    return gulp.src(destination)
-      .pipe(rimraf());
+  gulp.task("remove:less", function (cb) {
+
+    del(destination, cb);
+
   });
 
   /**

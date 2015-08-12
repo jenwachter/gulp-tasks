@@ -6,7 +6,7 @@ var sourcemaps = require("gulp-sourcemaps");
 var jshint = require("gulp-jshint");
 var stylish = require("jshint-stylish");
 var gulpif = require("gulp-if");
-var rimraf = require("gulp-rimraf");
+var del = require("del");
 var uglify = require("gulp-uglify");
 var concat = require("gulp-concat");
 var through2 = require("through2");
@@ -24,10 +24,9 @@ module.exports = function (config) {
    * in preparation for newly compiled files.
    *
    */
-  gulp.task("remove:js", function () {
+  gulp.task("remove:js", function (cb) {
 
-    return gulp.src(destination)
-      .pipe(rimraf());
+    del(destination, cb);
 
   });
 
@@ -84,7 +83,7 @@ module.exports = function (config) {
 
           file.contents = res;
           next(null, file);
-          
+
         });
 
       }))
