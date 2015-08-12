@@ -6,6 +6,7 @@ var sourcemaps = require("gulp-sourcemaps");
 var rimraf = require("gulp-rimraf");
 var argv = require("minimist")(process.argv.slice(2));
 var minify = require("gulp-minify-css");
+var mqRemove = require("gulp-mq-remove");
 
 var Destination = require("../lib/destination");
 
@@ -57,8 +58,7 @@ module.exports = function (config) {
       .pipe(gulp.dest(destination))
 
       // IE stylesheets
-      .pipe(mqRemove(config.ieBreakpoint))
-      .pipe(gulp.dest(config.destination + "/ie"));
+      .pipe(gulpif(config.ieBreakpoint, mqRemove(config.ieBreakpoint), gulp.dest(destination + "/ie")));
 
   });
 
