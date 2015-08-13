@@ -10,12 +10,22 @@ var taskTypes = {
 /**
  * Tasker constructor
  * @param {obejct} gulpInstannce Instance of gulp
- * @param {obejct} config        Configuration
  */
-var Tasker = function (gulpInstannce, config) {
+var Tasker = function (gulpInstannce) {
 
   this.gulpInstannce = gulpInstannce;
-  this.config = config || {};
+  this.config = {};
+
+};
+
+/**
+ * Set task configuration
+ * @param {obejct} config        Configuration
+ */
+Tasker.prototype.setConfig = function (config) {
+
+  this.config = config;
+  return this;
 
 };
 
@@ -33,6 +43,22 @@ Tasker.prototype.add = function (taskType) {
   this.gulpInstannce.tasks = _.extend(this.gulpInstannce.tasks, moreTasks);
 
   // return Tasker object to enable chaining
+  return this;
+
+};
+
+/**
+ * Add a custom gulp task
+ * @param {string} taskType Task type (aids in config lookup)
+ */
+Tasker.prototype.addCustom = function (taskType, task) {
+
+  // get more tasks
+  var taskConfig = this.config[taskType];
+  var moreTasks = task(taskConfig);
+
+  this.gulpInstannce.tasks = _.extend(this.gulpInstannce.tasks, moreTasks);
+
   return this;
 
 };

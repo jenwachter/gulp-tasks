@@ -40,7 +40,8 @@ var Tasker = require("gulp-tasks");
 Then create and configure a gulp tasker:
 
 ```javascript
-var gulpTasker = new Tasker(gulp, {
+var gulpTasker = new Tasker(gulp);
+gulpTasker.setConfig({
 
   js: {
 
