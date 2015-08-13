@@ -10,6 +10,7 @@ var del = require("del");
 var uglify = require("gulp-uglify");
 var concat = require("gulp-concat");
 var through2 = require("through2");
+var gutil = require("gulp-util");
 
 var Destination = require("../lib/destination");
 
@@ -76,7 +77,8 @@ module.exports = function (config) {
         b.bundle(function (err, res) {
 
           if (err) {
-            console.log(err.message);
+            new gutil.PluginError("Gulp Tasks", err.message);
+
             // end this stream
             this.emit("end");
           }
