@@ -45,6 +45,11 @@ gulpTasker.setConfig({
 
   js: {
 
+    minify: {
+      // A glob object that defines the files to minify
+      src: ["./src/js/*.js"],
+    },
+
     concat: {
       // resulting filename, sans .js
       base: [

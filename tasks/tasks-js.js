@@ -103,33 +103,46 @@ module.exports = function (config) {
 
   });
 
-  /**
-   * Concatenate multiple files into one file.
-   */
-  gulp.task("concat:js", ["compile:js"], function () {
+   gulp.task("concat:js", ["compile:js"], function () {
 
-    if (!config.concat) return;
+     if (!config.concat) return;
 
-    for (var destinationFilename in config.concat) {
+     for (var destinationFilename in config.concat) {
 
-      // set source to be files to concatenate
-      gulp.src(config.concat[destinationFilename])
+       // set source to be files to concatenate
+       gulp.src(config.concat[destinationFilename])
 
-        // Concatenate given files into a file
-        .pipe(concat({ path: destinationFilename + ".js"}))
+         // Concatenate given files into a file
+         .pipe(concat({ path: destinationFilename + ".js"}))
 
-        // Minify files if gulping for production use
-        .pipe(gulpif(argv.production, uglify()))
+         // Minify files if gulping for production use
+         .pipe(gulpif(argv.production, uglify()))
 
-        .pipe(gulp.dest(destination));
+         .pipe(gulp.dest(destination));
 
-    }
+     }
 
-    return;
+     return;
+
+   });
+
+ /**
+  * Concatenate multiple files into one file.
+  */
+  gulp.task("minify:js", ["concat:js"], function () {
+
+    if (!config.minify) return;
+
+    return gulp.src(config.minify.src)
+
+      // Minify files if gulping for production use
+      .pipe(gulpif(argv.production, uglify()))
+
+      .pipe(gulp.dest(destination));
 
   });
 
-  gulp.task("default:js", ["hint:js", "compile:js", "concat:js"]);
+  gulp.task("default:js", ["hint:js", "minify:js"]);
 
   return gulp.tasks;
 
