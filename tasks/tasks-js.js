@@ -77,14 +77,16 @@ module.exports = function (config) {
         b.bundle(function (err, res) {
 
           if (err) {
-            new gutil.PluginError("Gulp Tasks", err.message);
 
-            // end this stream
+            new gutil.log("Browserify Error", gutil.colors.red.bold(err.message));
             this.emit("end");
-          }
 
-          file.contents = res;
-          next(null, file);
+          } else {
+
+            file.contents = res;
+            next(null, file);
+
+          }
 
         });
 
