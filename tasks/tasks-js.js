@@ -71,7 +71,24 @@ module.exports = function (config) {
         var b = browserify(file.path, { debug: !argv.production });
 
         _.each(transforms, function (transform) {
-          b.transform(transform);
+
+          var type = typeof transform;
+          var opts = {};
+          var t = function () {};
+
+          if (type === "function") {
+
+            t = transform;
+
+          } else if (type === "object") {
+
+            t = transform[0];
+            opts = transform[1] || {};
+
+          }
+
+          b.transform(t, opts);
+
         });
 
         b.bundle(function (err, res) {

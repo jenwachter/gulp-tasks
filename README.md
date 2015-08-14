@@ -64,7 +64,8 @@ gulpTasker.setConfig({
       // A glob object that defines the files to compile
       src: ["./src/js/*.js"],
 
-      // An array of transforms (see: http://bit.ly/1F4oex3)
+      // An array of transforms;
+      // [tr, tr, tr] or [[tr, opts], [tr, opts], [tr, opts]] (see: http://bit.ly/1F4oex3)
       transform: []
     },
 
