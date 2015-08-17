@@ -1,12 +1,13 @@
 var gulp = require("gulp");
+
+var argv = require("minimist")(process.argv.slice(2));
+var csslint = require("gulp-csslint");
+var del = require("del");
 var gulpif = require("gulp-if");
 var less = require("gulp-less");
-var csslint = require("gulp-csslint");
-var sourcemaps = require("gulp-sourcemaps");
-var del = require("del");
-var argv = require("minimist")(process.argv.slice(2));
 var minify = require("gulp-minify-css");
 var mqRemove = require("gulp-mq-remove");
+var sourcemaps = require("gulp-sourcemaps");
 
 var Destination = require("../lib/destination");
 

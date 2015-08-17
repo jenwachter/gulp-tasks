@@ -1,16 +1,17 @@
 var gulp = require("gulp");
-var _ = require("underscore");
+var gutil = require("gulp-util");
+
 var argv = require("minimist")(process.argv.slice(2));
 var browserify = require("browserify");
-var sourcemaps = require("gulp-sourcemaps");
-var jshint = require("gulp-jshint");
-var stylish = require("jshint-stylish");
-var gulpif = require("gulp-if");
-var del = require("del");
-var uglify = require("gulp-uglify");
 var concat = require("gulp-concat");
+var del = require("del");
+var gulpif = require("gulp-if");
+var jshint = require("gulp-jshint");
+// var sourcemaps = require("gulp-sourcemaps");
+var stylish = require("jshint-stylish");
 var through2 = require("through2");
-var gutil = require("gulp-util");
+var uglify = require("gulp-uglify");
+var _ = require("underscore");
 
 var Destination = require("../lib/destination");
 

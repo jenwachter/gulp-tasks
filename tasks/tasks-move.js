@@ -1,8 +1,8 @@
 var gulp = require("gulp");
-var _ = require("underscore");
-var argv = require("minimist")(process.argv.slice(2));
+
 var fs = require("fs");
 var mkdirp = require("mkdirp");
+var _ = require("underscore");
 
 var Destination = require("../lib/destination");
 
