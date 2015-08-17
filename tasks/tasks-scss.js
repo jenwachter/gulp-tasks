@@ -40,6 +40,13 @@ module.exports = function (config) {
 
   gulp.task("compile:scss", ["remove:scss"], function () {
 
+    /**
+     * If no breakpoint is specified, give it a fake one. If there isn't
+     * a breakpoint specified, mqRemove errors out even though it
+     * doesn't run. ¯\_(ツ)_/¯
+     */
+    var breakpoint = config.ieBreakpoint ? config.ieBreakpoint : { width: "100px" };
+
     return gulp.src(config.src)
 
       // Init sourcemaps (if not gulping for production use)
@@ -59,7 +66,7 @@ module.exports = function (config) {
       .pipe(gulp.dest(destination))
 
       // IE stylesheets
-      .pipe(gulpif(config.ieBreakpoint, mqRemove(config.ieBreakpoint)))
+      .pipe(gulpif(config.ieBreakpoint, mqRemove(breakpoint)))
       .pipe(gulpif(config.ieBreakpoint, gulp.dest(destination + "/ie")));
 
   });
