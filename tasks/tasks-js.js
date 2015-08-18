@@ -8,7 +8,6 @@ var concat = require("gulp-concat");
 var del = require("del");
 var gulpif = require("gulp-if");
 var jshint = require("gulp-jshint");
-var notify = require("gulp-notify");
 // var sourcemaps = require("gulp-sourcemaps");
 var stylish = require("jshint-stylish");
 var through2 = require("through2");
@@ -72,8 +71,6 @@ module.exports = function (config) {
     return gulp.src(config.compile.src)
 
       .pipe(plumber(onError))
-
-      .pipe(plumber({ errorHandler: notify.onError("Error: <%= error.message %>") }))
 
       .pipe(through2.obj(function (file, enc, callback) {
 
