@@ -1,4 +1,5 @@
 var gulp = require("gulp");
+var plumber = require("gulp-plumber");
 
 var argv = require("minimist")(process.argv.slice(2));
 var csslint = require("gulp-csslint");
@@ -10,6 +11,7 @@ var sass = require("gulp-sass");
 var sourcemaps = require("gulp-sourcemaps");
 
 var Destination = require("../lib/destination");
+var onError = require("../lib/onError");
 
 module.exports = function (config) {
 
@@ -33,7 +35,6 @@ module.exports = function (config) {
     var lintconfig = config.lint.csslintrc || {};
 
     return gulp.src(config.lint.src)
-
       .pipe(csslint(lintconfig))
       .pipe(csslint.reporter());
 
@@ -49,6 +50,8 @@ module.exports = function (config) {
     var breakpoint = config.ieBreakpoint ? config.ieBreakpoint : { width: "100px" };
 
     return gulp.src(config.src)
+
+      .pipe(plumber(onError))
 
       // Init sourcemaps (if not gulping for production use)
       .pipe(gulpif(!argv.production, sourcemaps.init()))
