@@ -1,5 +1,6 @@
 var gulp = require("gulp");
 var gutil = require("gulp-util");
+var plumber = require("gulp-plumber");
 
 var argv = require("minimist")(process.argv.slice(2));
 var browserify = require("browserify");
@@ -7,6 +8,7 @@ var concat = require("gulp-concat");
 var del = require("del");
 var gulpif = require("gulp-if");
 var jshint = require("gulp-jshint");
+var notify = require("gulp-notify");
 // var sourcemaps = require("gulp-sourcemaps");
 var stylish = require("jshint-stylish");
 var through2 = require("through2");
@@ -14,6 +16,7 @@ var uglify = require("gulp-uglify");
 var _ = require("underscore");
 
 var Destination = require("../lib/destination");
+var onError = require("../lib/onError");
 
 
 module.exports = function (config) {
@@ -44,6 +47,7 @@ module.exports = function (config) {
 
     return gulp.src(config.hint.src)
 
+      .pipe(plumber())
       .pipe(jshint(hintconfig))
       .pipe(jshint.reporter("jshint-stylish"));
 
@@ -67,7 +71,13 @@ module.exports = function (config) {
 
     return gulp.src(config.compile.src)
 
-      .pipe(through2.obj(function (file, enc, next) {
+      .pipe(plumber(onError))
+
+      .pipe(plumber({ errorHandler: notify.onError("Error: <%= error.message %>") }))
+
+      .pipe(through2.obj(function (file, enc, callback) {
+
+        var self = this;
 
         var b = browserify(file.path, { debug: !argv.production });
 
@@ -96,13 +106,12 @@ module.exports = function (config) {
 
           if (err) {
 
-            new gutil.log("Browserify Error", gutil.colors.red.bold(err.message));
-            this.emit("end");
+            callback(new gutil.PluginError("Gulp Tasks", err));
 
           } else {
 
             file.contents = res;
-            next(null, file);
+            callback(null, file);
 
           }
 
@@ -132,13 +141,15 @@ module.exports = function (config) {
        // set source to be files to concatenate
        gulp.src(config.concat[destinationFilename])
 
-         // Concatenate given files into a file
-         .pipe(concat({ path: destinationFilename + ".js"}))
+        .pipe(plumber(onError))
 
-         // Minify files if gulping for production use
-         .pipe(gulpif(argv.production, uglify()))
+        // Concatenate given files into a file
+        .pipe(concat({ path: destinationFilename + ".js"}))
 
-         .pipe(gulp.dest(destination));
+        // Minify files if gulping for production use
+        .pipe(gulpif(argv.production, uglify()))
+
+        .pipe(gulp.dest(destination));
 
      }
 
@@ -154,6 +165,8 @@ module.exports = function (config) {
     if (!config.minify) return;
 
     return gulp.src(config.minify.src)
+
+      .pipe(plumber(onError))
 
       // Minify files if gulping for production use
       .pipe(gulpif(argv.production, uglify()))
