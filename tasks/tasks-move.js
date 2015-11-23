@@ -1,7 +1,6 @@
 var gulp = require("gulp");
 
-var fs = require("fs");
-var mkdirp = require("mkdirp");
+var del = require("del");
 var _ = require("underscore");
 
 var Destination = require("../lib/destination");
@@ -20,11 +19,10 @@ module.exports = function (config) {
 
       var destination = move[destinationFolder];
 
-      var exists = fs.existsSync(destination);
-      if (!exists) mkdirp.sync(destination);
-
-      gulp.src(move.src)
-        .pipe(gulp.dest(destination));
+      del(destination, function () {
+        gulp.src(move.src)
+          .pipe(gulp.dest(destination));
+      });
 
     });
 
