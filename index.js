@@ -4,7 +4,8 @@ var taskTypes = {
   js: require("./tasks/tasks-js"),
   scss: require("./tasks/tasks-scss"),
   less: require("./tasks/tasks-less"),
-  move: require("./tasks/tasks-move")
+  move: require("./tasks/tasks-move"),
+  phpcs: require("./tasks/tasks-phpcs")
 };
 
 /**
