@@ -6,6 +6,7 @@
     "type": "git",
     "url": "git://github.com/jenwachter/gulp-tasks.git"
   },
+  "license": "MIT",
   "readmeFilename": "README.md",
   "dependencies": {
     "browserify": "~9.0.3",
