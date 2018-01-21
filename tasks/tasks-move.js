@@ -1,6 +1,6 @@
 var gulp = require("gulp");
 
-var del = require("del");
+var rimraf = require("rimraf");
 var _ = require("underscore");
 
 var Destination = require("../lib/destination");
@@ -19,7 +19,7 @@ module.exports = function (config) {
 
       var destination = move[destinationFolder];
 
-      del(destination, function () {
+      rimraf(destination, function () {
         gulp.src(move.src)
           .pipe(gulp.dest(destination));
       });

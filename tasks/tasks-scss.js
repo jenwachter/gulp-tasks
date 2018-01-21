@@ -3,7 +3,7 @@ var plumber = require("gulp-plumber");
 
 var argv = require("minimist")(process.argv.slice(2));
 var csslint = require("gulp-csslint");
-var del = require("del");
+var rimraf = require("rimraf");
 var gulpif = require("gulp-if");
 var minify = require("gulp-minify-css");
 var sass = require("gulp-sass");
@@ -19,7 +19,7 @@ module.exports = function (config) {
 
   gulp.task("remove:scss", function (cb) {
 
-    del(destination, cb);
+    rimraf(destination, cb);
 
   });
 

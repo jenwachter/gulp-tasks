@@ -5,11 +5,10 @@ var plumber = require("gulp-plumber");
 var argv = require("minimist")(process.argv.slice(2));
 var browserify = require("browserify");
 var concat = require("gulp-concat");
-var del = require("del");
+var rimraf = require("rimraf");
 var gulpif = require("gulp-if");
 var jshint = require("gulp-jshint");
 // var sourcemaps = require("gulp-sourcemaps");
-var stylish = require("jshint-stylish");
 var through2 = require("through2");
 var uglify = require("gulp-uglify");
 var _ = require("underscore");
@@ -30,7 +29,7 @@ module.exports = function (config) {
    */
   gulp.task("remove:js", function (cb) {
 
-    del(destination, cb);
+    rimraf(destination, cb);
 
   });
 
