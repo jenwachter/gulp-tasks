@@ -40,7 +40,7 @@ module.exports = function (config) {
    */
   gulp.task("hint:js", function () {
 
-    if (!config.hint.src) return;
+    if (!config.hint || !config.hint.src) return;
 
     var hintconfig = config.hint.jshintrc || {};
 
