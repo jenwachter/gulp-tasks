@@ -1,23 +1,23 @@
-var gulp = require("gulp");
-var plumber = require("gulp-plumber");
+var gulp = require('gulp');
+var plumber = require('gulp-plumber');
 
-var argv = require("minimist")(process.argv.slice(2));
-var csslint = require("gulp-csslint");
-var rimraf = require("rimraf");
-var gulpif = require("gulp-if");
-var less = require("gulp-less");
-var minify = require("gulp-minify-css");
-var sourcemaps = require("gulp-sourcemaps");
+var argv = require('minimist')(process.argv.slice(2));
+var csslint = require('gulp-csslint');
+var rimraf = require('rimraf');
+var gulpif = require('gulp-if');
+var less = require('gulp-less');
+var minify = require('gulp-minify-css');
+var sourcemaps = require('gulp-sourcemaps');
 
-var Destination = require("../lib/destination");
-var onError = require("../lib/onError");
+var Destination = require('../lib/destination');
+var onError = require('../lib/onError');
 
 module.exports = function (config) {
 
   config = config || {};
   var destination = Destination.find(config);
 
-  gulp.task("remove:less", function (cb) {
+  gulp.task('remove:less', function (cb) {
 
     rimraf(destination, cb);
 
@@ -27,7 +27,7 @@ module.exports = function (config) {
    * Run files through csslint if a csslintrc
    * file is specified in the config.
    */
-  gulp.task("lint:less", function () {
+  gulp.task('lint:less', function () {
 
     if (!config.lint.src) return;
 
@@ -39,7 +39,7 @@ module.exports = function (config) {
 
   });
 
-  gulp.task("compile:less", ["remove:less"], function () {
+  gulp.task('compile:less', ['remove:less'], function () {
 
     return gulp.src(config.src)
 
@@ -63,7 +63,7 @@ module.exports = function (config) {
 
   });
 
-  gulp.task("default:less", ["lint:less", "compile:less"]);
+  gulp.task('default:less', ['lint:less', 'compile:less']);
 
   return gulp.tasks;
 

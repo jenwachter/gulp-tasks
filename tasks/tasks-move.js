@@ -1,9 +1,9 @@
-var gulp = require("gulp");
+var gulp = require('gulp');
 
-var rimraf = require("rimraf");
-var _ = require("underscore");
+var rimraf = require('rimraf');
+var _ = require('underscore');
 
-var Destination = require("../lib/destination");
+var Destination = require('../lib/destination');
 
 module.exports = function (config) {
 
@@ -13,7 +13,7 @@ module.exports = function (config) {
   /**
    * Moves files from one location to another
    */
-  gulp.task("move", function () {
+  gulp.task('move', function () {
 
     _.each(config, function (move) {
 
@@ -30,7 +30,7 @@ module.exports = function (config) {
 
   });
 
-  gulp.task("default:move", ["move"]);
+  gulp.task('default:move', ['move']);
 
   return gulp.tasks;
 

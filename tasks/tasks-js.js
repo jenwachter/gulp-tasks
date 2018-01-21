@@ -1,20 +1,20 @@
-var gulp = require("gulp");
-var gutil = require("gulp-util");
-var plumber = require("gulp-plumber");
+var gulp = require('gulp');
+var gutil = require('gulp-util');
+var plumber = require('gulp-plumber');
 
-var argv = require("minimist")(process.argv.slice(2));
-var browserify = require("browserify");
-var concat = require("gulp-concat");
-var rimraf = require("rimraf");
-var gulpif = require("gulp-if");
-var jshint = require("gulp-jshint");
-// var sourcemaps = require("gulp-sourcemaps");
-var through2 = require("through2");
-var uglify = require("gulp-uglify");
-var _ = require("underscore");
+var argv = require('minimist')(process.argv.slice(2));
+var browserify = require('browserify');
+var concat = require('gulp-concat');
+var rimraf = require('rimraf');
+var gulpif = require('gulp-if');
+var jshint = require('gulp-jshint');
+// var sourcemaps = require('gulp-sourcemaps');
+var through2 = require('through2');
+var uglify = require('gulp-uglify');
+var _ = require('underscore');
 
-var Destination = require("../lib/destination");
-var onError = require("../lib/onError");
+var Destination = require('../lib/destination');
+var onError = require('../lib/onError');
 
 
 module.exports = function (config) {
@@ -27,7 +27,7 @@ module.exports = function (config) {
    * in preparation for newly compiled files.
    *
    */
-  gulp.task("remove:js", function (cb) {
+  gulp.task('remove:js', function (cb) {
 
     rimraf(destination, cb);
 
@@ -37,7 +37,7 @@ module.exports = function (config) {
    * Run files through jshint if a jshintrc
    * file is specified in the config.
    */
-  gulp.task("hint:js", function () {
+  gulp.task('hint:js', function () {
 
     if (!config.hint || !config.hint.src) return;
 
@@ -47,7 +47,7 @@ module.exports = function (config) {
 
       .pipe(plumber())
       .pipe(jshint(hintconfig))
-      .pipe(jshint.reporter("jshint-stylish"));
+      .pipe(jshint.reporter('jshint-stylish'));
 
   });
 
@@ -61,7 +61,7 @@ module.exports = function (config) {
    * https://github.com/gulpjs/gulp/blob/master/docs/recipes/browserify-uglify-sourcemap.md
    *
    */
-  gulp.task("compile:js", ["remove:js"], function () {
+  gulp.task('compile:js', ['remove:js'], function () {
 
     if (!config.compile.src) return;
 
@@ -83,11 +83,11 @@ module.exports = function (config) {
           var opts = {};
           var t = function () {};
 
-          if (type === "function") {
+          if (type === 'function') {
 
             t = transform;
 
-          } else if (type === "object") {
+          } else if (type === 'object') {
 
             t = transform[0];
             opts = transform[1] || {};
@@ -102,7 +102,7 @@ module.exports = function (config) {
 
           if (err) {
 
-            callback(new gutil.PluginError("Gulp Tasks", err));
+            callback(new gutil.PluginError('Gulp Tasks', err));
 
           } else {
 
@@ -128,7 +128,7 @@ module.exports = function (config) {
 
   });
 
-   gulp.task("concat:js", ["compile:js"], function () {
+   gulp.task('concat:js', ['compile:js'], function () {
 
      if (!config.concat) return;
 
@@ -140,7 +140,7 @@ module.exports = function (config) {
         .pipe(plumber(onError))
 
         // Concatenate given files into a file
-        .pipe(concat({ path: destinationFilename + ".js"}))
+        .pipe(concat({ path: destinationFilename + '.js'}))
 
         // Minify files if gulping for production use
         .pipe(gulpif(argv.production, uglify()))
@@ -156,7 +156,7 @@ module.exports = function (config) {
  /**
   * Concatenate multiple files into one file.
   */
-  gulp.task("minify:js", ["concat:js"], function () {
+  gulp.task('minify:js', ['concat:js'], function () {
 
     if (!config.minify) return;
 
@@ -171,7 +171,7 @@ module.exports = function (config) {
 
   });
 
-  gulp.task("default:js", ["hint:js", "minify:js"]);
+  gulp.task('default:js', ['hint:js', 'minify:js']);
 
   return gulp.tasks;
 
