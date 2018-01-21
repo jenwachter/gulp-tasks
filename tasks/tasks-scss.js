@@ -6,7 +6,6 @@ var csslint = require("gulp-csslint");
 var del = require("del");
 var gulpif = require("gulp-if");
 var minify = require("gulp-minify-css");
-var mqRemove = require("gulp-mq-remove");
 var sass = require("gulp-sass");
 var sourcemaps = require("gulp-sourcemaps");
 
@@ -42,13 +41,6 @@ module.exports = function (config) {
 
   gulp.task("compile:scss", ["remove:scss"], function () {
 
-    /**
-     * If no breakpoint is specified, give it a fake one. If there isn't
-     * a breakpoint specified, mqRemove errors out even though it
-     * doesn't run. ¯\_(ツ)_/¯
-     */
-    var breakpoint = config.ieBreakpoint ? config.ieBreakpoint : { width: "100px" };
-
     return gulp.src(config.src)
 
       .pipe(plumber(onError))
@@ -67,11 +59,7 @@ module.exports = function (config) {
         keepSpecialComments: 0
       })))
 
-      .pipe(gulp.dest(destination))
-
-      // IE stylesheets
-      .pipe(gulpif(config.ieBreakpoint, mqRemove(breakpoint)))
-      .pipe(gulpif(config.ieBreakpoint, gulp.dest(destination + "/ie")));
+      .pipe(gulp.dest(destination));
 
   });
 
