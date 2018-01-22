@@ -5,7 +5,7 @@ var argv = require('minimist')(process.argv.slice(2));
 var csslint = require('gulp-csslint');
 var rimraf = require('rimraf');
 var gulpif = require('gulp-if');
-var minify = require('gulp-minify-css');
+var cleancss = require('gulp-clean-css');
 var sass = require('gulp-sass');
 var sourcemaps = require('gulp-sourcemaps');
 
@@ -56,9 +56,7 @@ module.exports = function (config) {
       .pipe(gulpif(!argv.production, sourcemaps.write()))
 
       // Minify files if gulping for production use
-      .pipe(gulpif(argv.production, minify({
-        keepSpecialComments: 0
-      })))
+      .pipe(gulpif(argv.production, cleancss()))
 
       .pipe(gulp.dest(destination));
 
