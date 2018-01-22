@@ -2,7 +2,7 @@ var gulp = require('gulp');
 var plumber = require('gulp-plumber');
 
 var argv = require('minimist')(process.argv.slice(2));
-var csslint = require('gulp-csslint');
+var sassLint = require('gulp-sass-lint');
 var rimraf = require('rimraf');
 var gulpif = require('gulp-if');
 var cleancss = require('gulp-clean-css');
@@ -31,12 +31,13 @@ module.exports = function (config) {
 
     if (!config.lint.src) return;
 
-    var lintconfig = config.lint.csslintrc || {};
-    csslint.addFormatter('csslint-stylish');
-
     return gulp.src(config.lint.src)
-      .pipe(csslint(lintconfig))
-      .pipe(csslint.formatter('stylish'));
+      .pipe(plumber(onError))
+      .pipe(sassLint({
+        formatter: 'stylish',
+        rules: config.lint.csslintrc || {}
+      }))
+      .pipe(sassLint.format());
 
   });
 
