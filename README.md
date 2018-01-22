@@ -11,10 +11,6 @@ A collection of common gulp tasks for website projects. Task collections include
   * compile .scss source files into .css files
   * run csslint on files
   * minify files for production
-* __LESS tasks__
-  * compile .less source files into .css files
-  * run csslint on files
-  * minify files for production
 * __Move task__
   * simply move files from a source directory into development and production folders. Use cases for this task include images and fonts.
 
