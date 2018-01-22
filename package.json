@@ -28,7 +28,6 @@
     "jshint": "^2.9.5",
     "jshint-stylish": "^0.2.0",
     "minimist": "^1.2.0",
-    "mkdirp": "~0.5.0",
     "rimraf": "^2.6.2",
     "through2": "~0.6.3",
     "underscore": "~1.6.0"
