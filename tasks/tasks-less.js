@@ -32,10 +32,11 @@ module.exports = function (config) {
     if (!config.lint.src) return;
 
     var lintconfig = config.lint.csslintrc || {};
+    csslint.addFormatter('csslint-stylish');
 
     return gulp.src(config.lint.src)
       .pipe(csslint(lintconfig))
-      .pipe(csslint.reporter());
+      .pipe(csslint.formatter('stylish'));
 
   });
 
