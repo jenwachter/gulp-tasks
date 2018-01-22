@@ -11,7 +11,7 @@
   "dependencies": {
     "browserify": "~9.0.3",
     "gulp": "^3.9.0",
-    "gulp-concat": "~2.4.2",
+    "gulp-concat": "~2.6.1",
     "gulp-csslint": "^0.1.4",
     "gulp-if": "^1.2.0",
     "gulp-jshint": "^1.5.5",
