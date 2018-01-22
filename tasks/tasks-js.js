@@ -8,7 +8,7 @@ var concat = require('gulp-concat');
 var rimraf = require('rimraf');
 var gulpif = require('gulp-if');
 var jshint = require('gulp-jshint');
-// var sourcemaps = require('gulp-sourcemaps');
+var sourcemaps = require('gulp-sourcemaps');
 var through2 = require('through2');
 var uglify = require('gulp-uglify');
 var _ = require('underscore');
@@ -115,14 +115,14 @@ module.exports = function (config) {
 
       }))
 
-      // // Init sourcemaps (if not gulping for production use)
-      // .pipe(gulpif(!argv.production, sourcemaps.init()))
+      // Init sourcemaps (if not gulping for production use)
+      .pipe(gulpif(!argv.production, sourcemaps.init()))
 
       // Minify files (if gulping for production use)
       .pipe(gulpif(argv.production, uglify()))
 
-      // // Write sourcemaps (if not gulping for production use)
-      // .pipe(gulpif(!argv.production, sourcemaps.write()))
+      // Write sourcemaps (if not gulping for production use)
+      .pipe(gulpif(!argv.production, sourcemaps.write()))
 
       .pipe(gulp.dest(destination));
 
