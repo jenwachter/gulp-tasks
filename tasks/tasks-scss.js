@@ -31,12 +31,15 @@ module.exports = function (config) {
 
     if (!config.lint.src) return;
 
+    var opts = { formatter: 'stylish' };
+
+    if (config.lint.csslintrc) {
+      opts.configFile = config.lint.csslintrc;
+    }
+
     return gulp.src(config.lint.src)
       .pipe(plumber(onError))
-      .pipe(sassLint({
-        formatter: 'stylish',
-        rules: config.lint.csslintrc || {}
-      }))
+      .pipe(sassLint(opts))
       .pipe(sassLint.format());
 
   });
