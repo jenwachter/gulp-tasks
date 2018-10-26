@@ -1,5 +1,5 @@
-var gulp = require('gulp');
-var phpcs = require('gulp-phpcs');
+const gulp = require('gulp'),
+  phpcs = require('gulp-phpcs');
 
 module.exports = function (config) {
 

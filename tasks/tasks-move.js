@@ -1,14 +1,13 @@
-var gulp = require('gulp');
+const gulp = require('gulp'),
+  rimraf = require('rimraf'),
+  _ = require('underscore');
 
-var rimraf = require('rimraf');
-var _ = require('underscore');
-
-var Destination = require('../lib/destination');
+const Destination = require('../lib/destination');
 
 module.exports = function (config) {
 
   config = config || [];
-  var destinationFolder = Destination.findFolder();
+  let destinationFolder = Destination.findFolder();
 
   /**
    * Moves files from one location to another
@@ -17,7 +16,7 @@ module.exports = function (config) {
 
     _.each(config, function (move) {
 
-      var destination = move[destinationFolder];
+      let destination = move[destinationFolder];
 
       rimraf(destination, function () {
         gulp.src(move.src)
@@ -25,8 +24,6 @@ module.exports = function (config) {
       });
 
     });
-
-    return;
 
   });
 

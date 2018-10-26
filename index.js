@@ -1,6 +1,8 @@
-var _ = require('underscore');
 
-var taskTypes = {
+
+const _ = require('underscore');
+
+const taskTypes = {
   js: require('./tasks/tasks-js'),
   scss: require('./tasks/tasks-scss'),
   move: require('./tasks/tasks-move'),
@@ -11,7 +13,7 @@ var taskTypes = {
  * Tasker constructor
  * @param {obejct} gulpInstannce Instance of gulp
  */
-var Tasker = function (gulpInstannce) {
+const Tasker = function (gulpInstannce) {
 
   this.gulpInstannce = gulpInstannce;
   this.config = {};
@@ -36,8 +38,8 @@ Tasker.prototype.setConfig = function (config) {
 Tasker.prototype.add = function (taskType) {
 
   // get more tasks
-  var taskConfig = this.config[taskType];
-  var moreTasks = taskTypes[taskType](taskConfig);
+  let taskConfig = this.config[taskType];
+  let moreTasks = taskTypes[taskType](taskConfig);
 
   // add tasks to gulp instance
   this.gulpInstannce.tasks = _.extend(this.gulpInstannce.tasks, moreTasks);
@@ -54,8 +56,8 @@ Tasker.prototype.add = function (taskType) {
 Tasker.prototype.addCustom = function (taskType, task) {
 
   // get more tasks
-  var taskConfig = this.config[taskType];
-  var moreTasks = task(taskConfig);
+  let taskConfig = this.config[taskType];
+  let moreTasks = task(taskConfig);
 
   this.gulpInstannce.tasks = _.extend(this.gulpInstannce.tasks, moreTasks);
 

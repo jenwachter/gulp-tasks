@@ -1,21 +1,21 @@
-var gulp = require('gulp');
-var plumber = require('gulp-plumber');
+const cleancss = require('gulp-clean-css'),
+  gulp = require('gulp'),
+  gulpif = require('gulp-if'),
+  plumber = require('gulp-plumber'),
+  rimraf = require('rimraf'),
+  sass = require('gulp-sass'),
+  sassLint = require('gulp-sass-lint'),
+  sourcemaps = require('gulp-sourcemaps');
 
-var argv = require('minimist')(process.argv.slice(2));
-var sassLint = require('gulp-sass-lint');
-var rimraf = require('rimraf');
-var gulpif = require('gulp-if');
-var cleancss = require('gulp-clean-css');
-var sass = require('gulp-sass');
-var sourcemaps = require('gulp-sourcemaps');
+const argv = require('minimist')(process.argv.slice(2));
 
-var Destination = require('../lib/destination');
-var onError = require('../lib/onError');
+const Destination = require('../lib/destination');
+const onError = require('../lib/onError');
 
 module.exports = function (config) {
 
   config = config || {};
-  var destination = Destination.find(config);
+  let destination = Destination.find(config);
 
   gulp.task('remove:scss', function (cb) {
 
@@ -31,7 +31,7 @@ module.exports = function (config) {
 
     if (!config.lint.src) return;
 
-    var opts = { formatter: 'stylish' };
+    let opts = { formatter: 'stylish' };
 
     if (config.lint.csslintrc) {
       opts.configFile = config.lint.csslintrc;

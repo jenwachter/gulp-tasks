@@ -1,26 +1,24 @@
-var gulp = require('gulp');
-var gutil = require('gulp-util');
-var plumber = require('gulp-plumber');
+const browserify = require('browserify'),
+  concat = require('gulp-concat'),
+  gulp = require('gulp'),
+  gulpif = require('gulp-if'),
+  gutil = require('gulp-util'),
+  jshint = require('gulp-jshint'),
+  plumber = require('gulp-plumber'),
+  rimraf = require('rimraf'),
+  sourcemaps = require('gulp-sourcemaps'),
+  uglify = require('gulp-uglify'),
+  _ = require('underscore');
 
-var argv = require('minimist')(process.argv.slice(2));
-var browserify = require('browserify');
-var concat = require('gulp-concat');
-var rimraf = require('rimraf');
-var gulpif = require('gulp-if');
-var jshint = require('gulp-jshint');
-var sourcemaps = require('gulp-sourcemaps');
-var through2 = require('through2');
-var uglify = require('gulp-uglify');
-var _ = require('underscore');
+const argv = require('minimist')(process.argv.slice(2));
 
-var Destination = require('../lib/destination');
-var onError = require('../lib/onError');
-
+const Destination = require('../lib/destination');
+const onError = require('../lib/onError');
 
 module.exports = function (config) {
 
   config = config || {};
-  var destination = Destination.find(config);
+  let destination = Destination.find(config);
 
   /**
    * Remove previously compiled files
@@ -41,7 +39,7 @@ module.exports = function (config) {
 
     if (!config.hint || !config.hint.src) return;
 
-    var hintconfig = config.hint.jshintrc || {};
+    let hintconfig = config.hint.jshintrc || {};
 
     return gulp.src(config.hint.src)
 
@@ -65,7 +63,7 @@ module.exports = function (config) {
 
     if (!config.compile.src) return;
 
-    var transforms = config.compile.transform || [];
+    let transforms = config.compile.transform || [];
 
     return gulp.src(config.compile.src)
 
@@ -73,15 +71,13 @@ module.exports = function (config) {
 
       .pipe(through2.obj(function (file, enc, callback) {
 
-        var self = this;
-
-        var b = browserify(file.path, { debug: !argv.production });
+        let b = browserify(file.path, { debug: !argv.production });
 
         _.each(transforms, function (transform) {
 
-          var type = typeof transform;
-          var opts = {};
-          var t = function () {};
+          let type = typeof transform;
+          let opts = {};
+          let t = function () {};
 
           if (type === 'function') {
 
@@ -132,7 +128,7 @@ module.exports = function (config) {
 
      if (!config.concat) return;
 
-     for (var destinationFilename in config.concat) {
+     for (let destinationFilename in config.concat) {
 
        // set source to be files to concatenate
        gulp.src(config.concat[destinationFilename])
@@ -148,8 +144,6 @@ module.exports = function (config) {
         .pipe(gulp.dest(destination));
 
      }
-
-     return;
 
    });
 
