@@ -7,6 +7,7 @@ const browserify = require('browserify'),
   plumber = require('gulp-plumber'),
   rimraf = require('rimraf'),
   sourcemaps = require('gulp-sourcemaps'),
+  through2 = require('through2'),
   uglify = require('gulp-uglify'),
   _ = require('underscore');
 
