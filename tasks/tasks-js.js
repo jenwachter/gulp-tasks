@@ -59,7 +59,7 @@ module.exports = function (config) {
 
     let eslintconfig = config.eslint.eslintrc || {};
 
-    return gulp.src(config.hint.src)
+    return gulp.src(config.eslint.src)
 
       .pipe(plumber())
       .pipe(eslint(eslintconfig))
