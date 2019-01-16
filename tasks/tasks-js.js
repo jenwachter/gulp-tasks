@@ -1,5 +1,6 @@
 const browserify = require('browserify'),
   concat = require('gulp-concat'),
+  eslint = require('gulp-eslint'),
   gulp = require('gulp'),
   gulpif = require('gulp-if'),
   gutil = require('gulp-util'),
@@ -33,8 +34,7 @@ module.exports = function (config) {
   });
 
   /**
-   * Run files through jshint if a jshintrc
-   * file is specified in the config.
+   * Run files through jshint
    */
   gulp.task('hint:js', function () {
 
@@ -47,6 +47,23 @@ module.exports = function (config) {
       .pipe(plumber())
       .pipe(jshint(hintconfig))
       .pipe(jshint.reporter('jshint-stylish'));
+
+  });
+
+  /**
+   * Run files through eslint
+   */
+  gulp.task('eslint:js', function () {
+
+    if (!config.eslint || !config.eslint.src) return;
+
+    let eslintconfig = config.eslint.eslintrc || {};
+
+    return gulp.src(config.hint.src)
+
+      .pipe(plumber())
+      .pipe(eslint(eslintconfig))
+      .pipe(eslint.format('stylish'));
 
   });
 
