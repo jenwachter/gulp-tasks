@@ -7,6 +7,7 @@ const browserify = require('browserify'),
   jshint = require('gulp-jshint'),
   plumber = require('gulp-plumber'),
   rimraf = require('rimraf'),
+  rollup = require('gulp-rollup-stream'),
   sourcemaps = require('gulp-sourcemaps'),
   through2 = require('through2'),
   uglify = require('gulp-uglify'),
@@ -64,6 +65,20 @@ module.exports = function (config) {
       .pipe(plumber())
       .pipe(eslint(eslintconfig))
       .pipe(eslint.format('stylish'));
+
+  });
+
+  /**
+   * Compile JavaScript files using rollup
+   */
+  gulp.task('rollup:js', ['remove:js'], function () {
+
+    if (!config.rollup.src) return;
+
+    return gulp.src(config.rollup.src)
+      .pipe(plumber(onError))
+      .pipe(rollup(config.rollup.options))
+      .pipe(gulp.dest(destination));
 
   });
 
