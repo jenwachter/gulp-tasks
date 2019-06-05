@@ -18,6 +18,70 @@ const argv = require('minimist')(process.argv.slice(2));
 const Destination = require('../lib/destination');
 const onError = require('../lib/onError');
 
+function compileJS(config, destination)
+{
+  if (!config.src) return;
+
+  let transforms = config.transform || [];
+
+  return gulp.src(config.src)
+
+    .pipe(plumber(onError))
+
+    .pipe(through2.obj(function (file, enc, callback) {
+
+      let b = browserify(file.path, { debug: !argv.production });
+
+      _.each(transforms, function (transform) {
+
+        let type = typeof transform;
+        let opts = {};
+        let t = function () {};
+
+        if (type === 'function') {
+
+          t = transform;
+
+        } else if (type === 'object') {
+
+          t = transform[0];
+          opts = transform[1] || {};
+
+        }
+
+        b.transform(t, opts);
+
+      });
+
+      b.bundle(function (err, res) {
+
+        if (err) {
+
+          callback(new gutil.PluginError('Gulp Tasks', err));
+
+        } else {
+
+          file.contents = res;
+          callback(null, file);
+
+        }
+
+      });
+
+    }))
+
+    // Init sourcemaps (if not gulping for production use)
+    .pipe(gulpif(!argv.production, sourcemaps.init()))
+
+    // Minify files (if gulping for production use)
+    .pipe(gulpif(argv.production, uglify()))
+
+    // Write sourcemaps (if not gulping for production use)
+    .pipe(gulpif(!argv.production, sourcemaps.write()))
+
+    .pipe(gulp.dest(destination));
+}
+
 module.exports = function (config) {
 
   config = config || {};
@@ -94,66 +158,11 @@ module.exports = function (config) {
    */
   gulp.task('compile:js', ['remove:js'], function () {
 
-    if (!config.compile.src) return;
-
-    let transforms = config.compile.transform || [];
-
-    return gulp.src(config.compile.src)
-
-      .pipe(plumber(onError))
-
-      .pipe(through2.obj(function (file, enc, callback) {
-
-        let b = browserify(file.path, { debug: !argv.production });
-
-        _.each(transforms, function (transform) {
-
-          let type = typeof transform;
-          let opts = {};
-          let t = function () {};
-
-          if (type === 'function') {
-
-            t = transform;
-
-          } else if (type === 'object') {
-
-            t = transform[0];
-            opts = transform[1] || {};
-
-          }
-
-          b.transform(t, opts);
-
-        });
-
-        b.bundle(function (err, res) {
-
-          if (err) {
-
-            callback(new gutil.PluginError('Gulp Tasks', err));
-
-          } else {
-
-            file.contents = res;
-            callback(null, file);
-
-          }
-
-        });
-
-      }))
-
-      // Init sourcemaps (if not gulping for production use)
-      .pipe(gulpif(!argv.production, sourcemaps.init()))
-
-      // Minify files (if gulping for production use)
-      .pipe(gulpif(argv.production, uglify()))
-
-      // Write sourcemaps (if not gulping for production use)
-      .pipe(gulpif(!argv.production, sourcemaps.write()))
-
-      .pipe(gulp.dest(destination));
+    if (Array.isArray(config.compile)) {
+      return config.compile.map(config => compileJS(config, destination));
+    } else {
+      return compileJS(config.compile, destination);
+    }
 
   });
 
