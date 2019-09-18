@@ -21,7 +21,6 @@
     "gulp-notify": "^3.2.0",
     "gulp-phpcs": "^2.0.0",
     "gulp-plumber": "^1.2.0",
-    "gulp-rollup-stream": "git+https://github.com/johnshopkins/gulp-rollup-stream.git#v0.2.1",
     "gulp-sass": "^4.0.2",
     "gulp-sass-lint": "^1.3.4",
     "gulp-sourcemaps": "^2.6.3",
