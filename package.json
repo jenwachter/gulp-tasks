@@ -28,7 +28,7 @@
     "gulp-util": "^3.0.6",
     "jshint": "^2.9.5",
     "jshint-stylish": "^0.2.0",
-    "minimist": "^1.2.0",
+    "minimist": "^1.2.2",
     "rimraf": "^2.6.2",
     "through2": "^2.0.0",
     "underscore": "^1.8.3"
