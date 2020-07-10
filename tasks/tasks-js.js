@@ -29,7 +29,7 @@ function compileJS(config, destination)
 
     .pipe(through2.obj(function (file, enc, callback) {
 
-      let b = browserify(file.path, { debug: !argv.production });
+      let b = browserify(file.path, config.browserifyOptions || {});
 
       _.each(transforms, function (transform) {
 
